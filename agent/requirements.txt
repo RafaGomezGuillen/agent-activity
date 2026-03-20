@@ -1,0 +1,13 @@
+# This file is used to install the dependencies for the project.
+# It is recommended to use a virtual environment to avoid conflicts with other projects.
+# You can create a virtual environment using the following command:
+# python -m venv venv
+# Then activate the virtual environment using the following command:
+# Windows: venv\Scripts\activate
+# Linux/Mac: source venv/bin/activate
+# After activating the virtual environment, you can install the dependencies using the following command:
+# pip install -r requirements.txt
+
+psutil==5.9.8
+requests==2.31.0
+pynput==1.8.0

