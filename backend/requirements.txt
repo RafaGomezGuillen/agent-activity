@@ -1,0 +1,19 @@
+# This file is used to install the dependencies for the project.
+# It is recommended to use a virtual environment to avoid conflicts with other projects.
+# You can create a virtual environment using the following command:
+# python -m venv venv
+# Then activate the virtual environment using the following command:
+# Windows: venv\Scripts\activate
+# Linux/Mac: source venv/bin/activate
+# After activating the virtual environment, you can install the dependencies using the following command:
+# pip install -r requirements.txt
+
+fastapi==0.110.0
+uvicorn[standard]==0.27.1
+
+sqlalchemy==2.0.27
+alembic==1.13.1
+
+pydantic==2.6.1
+
+python-dotenv==1.0.1
