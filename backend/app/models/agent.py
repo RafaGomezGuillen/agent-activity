@@ -31,3 +31,4 @@ class Agent(Base):
     # Relationships
     keylogs = relationship("Keylog", back_populates="agent", cascade="all, delete-orphan")
     metrics = relationship("Metric", back_populates="agent", cascade="all, delete-orphan")
+    clipboards = relationship("Clipboard", back_populates="agent", cascade="all, delete-orphan")
