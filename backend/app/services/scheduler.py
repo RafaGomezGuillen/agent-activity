@@ -1,8 +1,10 @@
+import logging
 from apscheduler.schedulers.background import BackgroundScheduler
 
 from app.services.agents import check_agents_status
 
 scheduler = BackgroundScheduler()
+logger = logging.getLogger(__name__)
 
 def start_scheduler():
     scheduler.add_job(
@@ -13,10 +15,10 @@ def start_scheduler():
         replace_existing=True,
     )
 
-    print("--- Starting scheduler ---")
+    logger.info("--- Starting scheduler ---")
     scheduler.start()
 
 def stop_scheduler():
     if scheduler.running:
         scheduler.shutdown()
-        print("--- Scheduler stopped ---")
+        logger.info("--- Scheduler stopped ---")
