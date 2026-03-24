@@ -7,6 +7,9 @@ def save_agent_id(agent_id):
     Args:
         agent_id (str): Unique agent identifier to save
     """
+    if not os.path.exists(AGENT_FILE):
+        os.makedirs(os.path.dirname(AGENT_FILE), exist_ok=True)
+    
     with open(AGENT_FILE, "w") as f:
         f.write(agent_id)
 
