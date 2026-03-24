@@ -40,6 +40,7 @@ def ingest_metrics(
 
         uptime_hours=data.uptime_hours,
         process_count=data.process_count,
+        current_app=data.current_app,
 
         battery_percent=data.battery.percent,
         battery_plugged=str(data.battery.plugged)

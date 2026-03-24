@@ -6,6 +6,9 @@ import time
 import re, uuid
 from datetime import datetime
 
+from core.current_app import get_current_app
+
+
 def get_basic_info():
     """
     Collect basic system information for agent registration.
@@ -73,6 +76,7 @@ def get_metrics():
             "percent": battery.percent if battery else "N/A",
             "plugged": battery.power_plugged if battery else "N/A"
         },
+        "current_app": get_current_app(),
         "uptime_hours": round((time.time() - psutil.boot_time()) / 3600, 2),
         "process_count": len(psutil.pids())
     }

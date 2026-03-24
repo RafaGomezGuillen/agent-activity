@@ -31,6 +31,7 @@ class Metric(Base):
     # System
     uptime_hours = Column(Float)
     process_count = Column(Integer)
+    current_app = Column(String)
 
     # Battery
     battery_percent = Column(Float, nullable=True)

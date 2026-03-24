@@ -31,6 +31,7 @@ class MetricsCreate(BaseModel):
 
     uptime_hours: float
     process_count: int
+    current_app: str
 
     battery: BatterySchema
 
@@ -55,6 +56,7 @@ class MetricsOut(BaseModel):
 
     battery_percent: Optional[float]
     battery_plugged: Optional[str]
+    current_app: str
 
     class Config:
         from_attributes = True

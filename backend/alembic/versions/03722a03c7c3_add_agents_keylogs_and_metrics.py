@@ -67,6 +67,7 @@ def upgrade() -> None:
     sa.Column('process_count', sa.Integer(), nullable=True),
     sa.Column('battery_percent', sa.Float(), nullable=True),
     sa.Column('battery_plugged', sa.String(), nullable=True),
+    sa.Column('current_app', sa.String(), nullable=True),
     sa.Column('agent_id', sa.String(), nullable=True),
     sa.ForeignKeyConstraint(['agent_id'], ['agents.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
