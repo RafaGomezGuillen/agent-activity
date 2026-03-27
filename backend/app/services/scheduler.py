@@ -3,6 +3,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 from app.services.agents import check_agents_status
 from app.services.screenshots import delete_old_screenshots
+from app.services.commands import check_pending_commands
 
 scheduler = BackgroundScheduler()
 logger = logging.getLogger(__name__)
@@ -21,6 +22,14 @@ def start_scheduler():
         trigger="interval",
         hours=24,
         id="screenshot_cleanup_job",
+        replace_existing=True,
+    )
+
+    scheduler.add_job(
+        check_pending_commands,
+        trigger="interval",
+        minutes=10,
+        id="commands_check_job",
         replace_existing=True,
     )
 
