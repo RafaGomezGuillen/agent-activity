@@ -48,7 +48,6 @@ def get_clipboards(
     start_time: str | None = Query(None, description="Filter by start time (eg. '2024-06-01T00:00:00Z')"),
     end_time: str | None = Query(None, description="Filter by end time (eg. '2024-06-01T00:00:00Z')"),
     app: str | None = Query(None, description="Filter by application name (case-insensitive, partial match)"),
-    type: str | None = Query(None, description="Type of clipboard event (e.g., 'keypress', 'keydown', 'keyup')"),
     limit: int = Query(100, ge=1, le=1000, description="Limit must be between 1 and 1000"),
     offset: int = Query(0, ge=0, description="Offset must be non-negative"),
     db: Session = Depends(get_db),

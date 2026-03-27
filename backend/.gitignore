@@ -1,6 +1,8 @@
 # Project:
 database.db
 logs/
+uploads/
+.DS_Store
 
 # Python pacakage files
 # -----------------------------------------------------

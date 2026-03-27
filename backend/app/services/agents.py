@@ -4,9 +4,9 @@ from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
 
 from app.db.database import SessionLocal
-from app.models.agent import Agent
+from app.models import Agent
 
-logger = logging.getLogger("agent_status_job")
+logger = logging.getLogger("agent_job")
 
 def check_agents_status():
     """
