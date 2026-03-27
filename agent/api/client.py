@@ -1,3 +1,4 @@
+import os
 import requests
 from config.settings import SERVER_URL
 
@@ -41,3 +42,18 @@ def send_clipboards(agent_id, events):
     )
 
     r.raise_for_status()
+
+def upload_screenshot(agent_id, filepath):
+    """
+    Upload screenshot bytes to the server endpoint.
+    """
+    with open(filepath, "rb") as f:
+        files = {"file": (os.path.basename(filepath), f, "image/jpeg")}
+        r = requests.post(
+            f"{SERVER_URL}/screenshots/{agent_id}",
+            files=files,
+            timeout=15
+        )
+        r.raise_for_status()
+
+    return r.json() if r.headers.get("Content-Type", "").startswith("application/json") else {"status": "uploaded"}

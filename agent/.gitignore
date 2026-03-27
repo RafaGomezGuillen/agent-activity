@@ -1,5 +1,7 @@
 # Project:
 data/
+logs/
+.DS_Store
 
 # Python pacakage files
 # -----------------------------------------------------

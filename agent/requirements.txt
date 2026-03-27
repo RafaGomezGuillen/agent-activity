@@ -10,6 +10,16 @@
 
 psutil==5.9.8
 requests==2.31.0
+
+# For monitoring keyboard and mouse events
 pynput==1.8.0
+
+# For copying text to the clipboard
 pyperclip==1.11.0
+
+# For colored output in the terminal
 colorama==0.4.6
+
+# For taking screenshots
+pyscreenshot==3.1
+Pillow==10.2.0

