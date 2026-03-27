@@ -28,3 +28,6 @@ SCREENSHOT_FOLDER = "data/screenshots/"
 SCREENSHOT_MAX_COUNT = 100 # maximum number of screenshots to keep in the folder
 SCREENSHOT_INTERVAL = 60  # seconds between screenshots
 SCREENSHOT_QUALITY = 10  # JPEG quality for compression (0-100)
+
+# Filesystem configuration
+MAX_FILE_SIZE = 2 * 1024 * 1024  # 2MB
