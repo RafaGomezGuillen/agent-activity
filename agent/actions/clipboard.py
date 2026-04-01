@@ -190,6 +190,6 @@ def start_clipboard(agent_id: str | None) -> Optional[bool]:
     send_thread = threading.Thread(target=_send_to_server_loop, daemon=True)
     send_thread.start()
 
-    logger.info(f"Clipboard monitor started → {CLIPBOARD_FILE}")
+    logger.info(f"Clipboard monitor started -> {CLIPBOARD_FILE}")
 
     return True

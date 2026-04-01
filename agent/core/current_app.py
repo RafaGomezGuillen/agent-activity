@@ -1,6 +1,5 @@
 import platform
 import time
-from tokenize import Name
 
 from config.settings import APP_CACHE_TTL, LAST_APP_CHECK
 

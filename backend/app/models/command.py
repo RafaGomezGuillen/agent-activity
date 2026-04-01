@@ -22,4 +22,4 @@ class Command(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     executed_at = Column(DateTime, nullable=True)
 
-    AVAILABLE_COMMANDS = ["filesystem.list_directory", "filesystem.read_file"]
+    AVAILABLE_COMMANDS = ["filesystem.list_directory", "filesystem.read_file", "processes.list_processes"]

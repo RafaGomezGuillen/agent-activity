@@ -14,7 +14,7 @@ def start_screenshot_service(agent_id):
         if thread is None:
             logger.error("Screenshot service disabled.")
         else:
-            logger.info(f"Screenshot service running → {SCREENSHOT_FOLDER}")
+            logger.info(f"Screenshot service running -> {SCREENSHOT_FOLDER}")
 
     except Exception as e:
         logger.error(f"Screenshot service error: {e}")

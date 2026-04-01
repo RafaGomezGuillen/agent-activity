@@ -14,7 +14,7 @@ def start_clipboard_service(agent_id):
         if monitor is None:
             logger.error("Clipboard monitor disabled.")
         else:
-            logger.info(f"Clipboard monitor running → {CLIPBOARD_FILE}")
+            logger.info(f"Clipboard monitor running -> {CLIPBOARD_FILE}")
 
     except Exception as e:
         logger.error(f"Clipboard monitor error: {e}")

