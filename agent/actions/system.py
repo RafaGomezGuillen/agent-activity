@@ -70,7 +70,10 @@ def get_metrics():
         "network": {
             "bytes_sent_total": net_after.bytes_sent,
             "bytes_recv_total": net_after.bytes_recv,
-            "upload_speed_kb": round((net_after.bytes_sent - net_before.bytes_sent) / 1024, 2)
+            "packets_sent_total": net_after.packets_sent,
+            "packets_recv_total": net_after.packets_recv,
+            "upload_speed_kb": round((net_after.bytes_sent - net_before.bytes_sent) / 1024, 2),
+            "download_speed_kb": round((net_after.bytes_recv - net_before.bytes_recv) / 1024, 2)
         },
         "battery": {
             "percent": battery.percent if battery else "N/A",

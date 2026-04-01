@@ -18,6 +18,10 @@ class DiskSchema(BaseModel):
 class NetworkSchema(BaseModel):
     bytes_sent_total: float
     bytes_recv_total: float
+    packets_sent_total: float
+    packets_recv_total: float
+    upload_speed_kb: float
+    download_speed_kb: float
 
 class BatterySchema(BaseModel):
     percent: Optional[float]
@@ -48,8 +52,12 @@ class MetricsOut(BaseModel):
     disk_used_percent: float
     disk_total_gb: float
 
-    bytes_sent: float
-    bytes_recv: float
+    bytes_sent_total: float
+    bytes_recv_total: float
+    packets_sent_total: float
+    packets_recv_total: float
+    upload_speed_kb: float
+    download_speed_kb: float
 
     uptime_hours: float
     process_count: int

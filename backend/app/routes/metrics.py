@@ -35,8 +35,12 @@ def ingest_metrics(
         disk_used_percent=data.disk.used_percent,
         disk_total_gb=data.disk.total_gb,
 
-        bytes_sent=data.network.bytes_sent_total,
-        bytes_recv=data.network.bytes_recv_total,
+        bytes_sent_total=data.network.bytes_sent_total,
+        bytes_recv_total=data.network.bytes_recv_total,
+        packets_sent_total=data.network.packets_sent_total,
+        packets_recv_total=data.network.packets_recv_total,
+        upload_speed_kb=data.network.upload_speed_kb,
+        download_speed_kb=data.network.download_speed_kb,
 
         uptime_hours=data.uptime_hours,
         process_count=data.process_count,

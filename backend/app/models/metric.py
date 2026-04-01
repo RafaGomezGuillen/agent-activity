@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Float, Integer, DateTime, ForeignKey
+from sqlalchemy import Column, String, Float, Integer, DateTime, ForeignKey, JSON
 from datetime import datetime
 import uuid
 
@@ -25,8 +25,12 @@ class Metric(Base):
     disk_total_gb = Column(Float)
 
     # Network
-    bytes_sent = Column(Float)
-    bytes_recv = Column(Float)
+    bytes_sent_total = Column(Float)
+    bytes_recv_total = Column(Float)
+    packets_sent_total = Column(Float)
+    packets_recv_total = Column(Float)
+    upload_speed_kb = Column(Float)
+    download_speed_kb = Column(Float)
 
     # System
     uptime_hours = Column(Float)
