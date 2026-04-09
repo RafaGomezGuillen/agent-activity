@@ -13,7 +13,7 @@ Set up the project on **macOS, Linux, or Windows** using Python 3.11.
 Verify your Python version:
 
 ```sh
-python3 --version
+python --version
 ```
 
 If Python 3.11 is not installed, download it from the [official Python website](https://www.python.org/downloads/).
@@ -25,7 +25,7 @@ If Python 3.11 is not installed, download it from the [official Python website](
 **macOS & Linux:**
 
 ```sh
-python3.11 -m venv venv
+python -m venv venv
 source venv/bin/activate
 ```
 
