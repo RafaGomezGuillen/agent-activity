@@ -12,10 +12,10 @@ psutil==5.9.8
 requests==2.31.0
 
 # For monitoring keyboard and mouse events
-pynput==1.8.0
+pynput==1.8.0 ; platform_system != "linux"
 
 # For copying text to the clipboard
-pyperclip==1.11.0
+pyperclip==1.11.0 ; platform_system != "linux"
 
 # For colored output in the terminal
 colorama==0.4.6
