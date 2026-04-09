@@ -13,7 +13,7 @@ Set up the project on **macOS, Linux, or Windows** using Python 3.11.
 Verify your Python version:
 
 ```sh
-python3 --version
+python --version
 ```
 
 If Python 3.11 is not installed, download it from the [official Python website](https://www.python.org/downloads/).
@@ -25,7 +25,7 @@ If Python 3.11 is not installed, download it from the [official Python website](
 **macOS & Linux:**
 
 ```sh
-python3.11 -m venv venv
+python -m venv venv
 source venv/bin/activate
 ```
 
@@ -50,29 +50,6 @@ pip install -r requirements.txt
 ---
 
 ### Migrate the Alembic migrations
-
-To create a new migration add the new model created to `app/db/base.py`.
-
-```py
-from app.db.database import Base
-
-# Import all models...
-from app.models import Agent
-```
-
-To avoid circular error you need to add all models to the following file `app/models/__init__.py`
-
-```py
-from .agent import Agent
-from .keylog import Keylog
-from .metric import Metric
-```
-
-And create the migration with the following command:
-
-```sh
-alembic revision --autogenerate -m "<description>"
-```
 
 To create the **SQLite** DB and migrate the models execute the following command:
 

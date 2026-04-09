@@ -11,18 +11,18 @@ class Agent(Base):
     id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
 
     hostname = Column(String)
+    ip_address = Column(String)
+    mac_address = Column(String)
+    
     os = Column(String)
     os_release = Column(String)
     os_version = Column(String)
+
     architecture = Column(String)
     processor = Column(String)
-
     physical_cores = Column(Integer)
     total_cores = Column(Integer)
     max_frequency = Column(String)
-
-    ip_address = Column(String)
-    mac_address = Column(String)
 
     status = Column(Boolean, default=True) # True = online, False = offline
     created_at = Column(DateTime, default=datetime.utcnow)
