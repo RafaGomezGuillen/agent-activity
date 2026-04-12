@@ -8,7 +8,14 @@
 # After activating the virtual environment, you can install the dependencies using the following command:
 # pip install -r requirements.txt
 
+# For packaging the application into an executable
+pyinstaller>=6.5.0
+pyinstaller-hooks-contrib
+
+# For monitoring system resources
 psutil==5.9.8
+
+# For making HTTP requests to the API
 requests==2.31.0
 
 # For monitoring keyboard and mouse events
