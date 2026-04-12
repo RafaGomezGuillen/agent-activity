@@ -6,6 +6,7 @@ APP_NAME = "alisium-agent"
 LOGS_DIR = "logs"
 DATA_DIR = "data"
 AGENT_FILE = f"{DATA_DIR}/agent_id.txt"
+ICON_PATH = "assets/icon.jpg"
 
 # --------------------
 # Read Team Activity:

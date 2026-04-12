@@ -31,7 +31,7 @@ else:
     target_arch = None  # Let PyInstaller choose
 
 a = Analysis(
-    [os.path.join(PROJECT_ROOT, "main.py")],
+    [os.path.join(SPEC_DIR, "main_mac.py")],
     pathex=[PROJECT_ROOT],
     binaries=BINARIES,
     datas=DATAS,

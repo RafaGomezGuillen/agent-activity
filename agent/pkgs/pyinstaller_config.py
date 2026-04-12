@@ -41,6 +41,7 @@ PLATFORM_CONFIG = {
 
 # Hidden imports (modules not automatically detected)
 HIDDEN_IMPORTS = [
+    "rumps",
     "services.keylogger",
     "services.clipboard",
     "services.screenshot",
