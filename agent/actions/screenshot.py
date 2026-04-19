@@ -1,4 +1,5 @@
 import os
+import platform
 import time
 import threading
 import datetime
@@ -13,12 +14,26 @@ from config.settings import (
     SCREENSHOT_QUALITY
 )
 
+SCREENSHOT_BACKEND = None
+
 try:
-    import pyscreenshot as ImageGrab
     from PIL import Image
+    from PIL import ImageGrab as PILImageGrab
 except ImportError:
-    ImageGrab = None
     Image = None
+    PILImageGrab = None
+
+try:
+    import pyscreenshot
+except ImportError:
+    pyscreenshot = None
+
+SYSTEM = platform.system()
+
+if SYSTEM in {"Windows", "Darwin"} and PILImageGrab is not None:
+    SCREENSHOT_BACKEND = "pillow"
+elif pyscreenshot is not None and Image is not None:
+    SCREENSHOT_BACKEND = "pyscreenshot"
 
 logger = logging.getLogger("screenshot")
 logging.basicConfig(level=logging.INFO)
@@ -61,8 +76,12 @@ def _cleanup_old_screenshots():
 def _take_screenshot():
     """Take a screenshot and save it with compression."""
     try:
-        # Grab screenshot (PIL Image object)
-        screenshot = ImageGrab.grab()
+        if SCREENSHOT_BACKEND == "pillow":
+            screenshot = PILImageGrab.grab()
+        elif SCREENSHOT_BACKEND == "pyscreenshot":
+            screenshot = pyscreenshot.grab()
+        else:
+            raise RuntimeError("No screenshot backend available")
 
         # Ensure we have RGB color data (avoid grayscale/monochrome renders)
         if screenshot.mode != "RGB":
@@ -89,7 +108,7 @@ def _take_screenshot():
         _cleanup_old_screenshots()
 
     except Exception as e:
-        logger.error(f"Error taking screenshot: {e}")
+        logger.exception(f"Error taking screenshot with backend '{SCREENSHOT_BACKEND}': {e}")
 
 def _screenshot_loop():
     """Main loop for taking screenshots at intervals."""
@@ -105,8 +124,8 @@ def start_screenshot(agent_id: str) -> Optional[threading.Thread]:
     global AGENT_ID, SCREENSHOT_THREAD
     AGENT_ID = agent_id
 
-    if ImageGrab is None or Image is None:
-        logger.error("pyscreenshot or Pillow not installed. Screenshot service disabled.")
+    if SCREENSHOT_BACKEND is None or Image is None:
+        logger.error("No screenshot backend available. Screenshot service disabled.")
         return None
 
     if SCREENSHOT_THREAD is not None and SCREENSHOT_THREAD.is_alive():
@@ -117,7 +136,10 @@ def start_screenshot(agent_id: str) -> Optional[threading.Thread]:
 
     _ensure_folder()
 
-    logger.info(f"Screenshot service starting -> {SCREENSHOT_FOLDER} (interval: {SCREENSHOT_INTERVAL}s, max: {SCREENSHOT_MAX_COUNT})")
+    logger.info(
+        f"Screenshot service starting -> {SCREENSHOT_FOLDER} "
+        f"(interval: {SCREENSHOT_INTERVAL}s, max: {SCREENSHOT_MAX_COUNT}, backend: {SCREENSHOT_BACKEND})"
+    )
 
     thread = threading.Thread(target=_screenshot_loop, daemon=True)
     thread.start()
