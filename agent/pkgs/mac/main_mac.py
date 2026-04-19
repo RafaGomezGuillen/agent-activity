@@ -8,11 +8,12 @@ The agent runs in a background thread; the rumps event loop owns the main thread
 import sys
 import threading
 import rumps
+import multiprocessing
 
 from config.settings import APP_NAME, ICON_PATH
 from app.bootstrap import init_agent
 from app.agent import Agent
-from core.single_instance import SingleInstance
+from core.single_instance import another_mac_instance_running
 from logger import logger
 
 
@@ -83,13 +84,10 @@ class MacAgent(rumps.App):
 
 
 if __name__ == "__main__":
-    instance = SingleInstance(APP_NAME)
+    multiprocessing.freeze_support()
 
-    if not instance.acquire():
-        logger.error(f"Another instance of {APP_NAME} is already running.")
-        sys.exit(1)
+    if another_mac_instance_running():
+        logger.info(f"{APP_NAME} is already running.")
+        sys.exit(0)
 
-    try:
-        MacAgent().run()
-    finally:
-        instance.release()
+    MacAgent().run()

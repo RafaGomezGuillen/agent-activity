@@ -47,35 +47,68 @@ a = Analysis(
 
 pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 
-exe = EXE(
-    pyz,
-    a.scripts,
-    a.binaries,
-    a.zipfiles,
-    a.datas,
-    [],
-    name=COMMON_ARGS["name"],
-    debug=False,
-    bootloader_ignore_signals=False,
-    strip=False,
-    upx=True,
-    upx_exclude=[],
-    runtime_tmpdir=None,
-    console=COMMON_ARGS["console"],
-    target_arch=target_arch,
-    codesign_identity=None,
-    entitlements_file=None,
-)
+if COMMON_ARGS["onefile"]:
+    exe = EXE(
+        pyz,
+        a.scripts,
+        a.binaries,
+        a.zipfiles,
+        a.datas,
+        [],
+        name=COMMON_ARGS["name"],
+        debug=False,
+        bootloader_ignore_signals=False,
+        strip=False,
+        upx=True,
+        upx_exclude=[],
+        runtime_tmpdir=None,
+        console=COMMON_ARGS["console"],
+        target_arch=target_arch,
+        codesign_identity=None,
+        entitlements_file=None,
+    )
+
+    bundle_target = exe
+else:
+    exe = EXE(
+        pyz,
+        a.scripts,
+        [],
+        exclude_binaries=True,
+        name=COMMON_ARGS["name"],
+        debug=False,
+        bootloader_ignore_signals=False,
+        strip=False,
+        upx=True,
+        upx_exclude=[],
+        runtime_tmpdir=None,
+        console=COMMON_ARGS["console"],
+        target_arch=target_arch,
+        codesign_identity=None,
+        entitlements_file=None,
+    )
+
+    coll = COLLECT(
+        exe,
+        a.binaries,
+        a.zipfiles,
+        a.datas,
+        strip=False,
+        upx=True,
+        upx_exclude=[],
+        name=COMMON_ARGS["name"],
+    )
+    bundle_target = coll
 
 app = BUNDLE(
-    exe,
+    bundle_target,
     name=f"{COMMON_ARGS['name']}.app",
     icon=platform_config.get("icon"),
     bundle_identifier=platform_config.get("osx_bundle_identifier"),
     info_plist={
         "NSPrincipalClass": "NSApplication",
         "NSHighResolutionCapable": "True",
-        "LSBackgroundOnly": "True",
+        "LSUIElement": "True",
     },
     dist_path=platform_config["distpath"],
     build_path=platform_config["workpath"],
