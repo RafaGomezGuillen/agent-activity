@@ -60,6 +60,13 @@ class WindowsAgent:
         # Fallback so tray still appears even if icon file fails.
         return Image.new("RGB", (64, 64), color=(50, 120, 220))
 
+    def _notify(self, title, message):
+        try:
+            logger.info(f"Showing notification: {title} - {message}")
+            self.icon.notify(message, title)
+        except Exception as exc:
+            logger.error(f"Notification error: {exc}")
+
     def _run_agent(self):
         try:
             if not self._agent_id:
@@ -74,18 +81,19 @@ class WindowsAgent:
 
     def _start_agent(self, icon, item):
         if self._running:
-            logger.info("Agent already running.")
+            self._notify("Agent Already Running", "The agent is already running in the background.")
             return
 
         self._stop_event.clear()
         self._running = True
         self._agent_thread = threading.Thread(target=self._run_agent, daemon=True)
         self._agent_thread.start()
-        logger.info("Agent started from tray icon.")
+
+        self._notify("Agent Started", "The agent is now running in the background.")
 
     def _stop_agent(self, icon, item):
         if not self._running:
-            logger.info("Agent is not running.")
+            self._notify("Agent Not Running", "The agent is not currently running.")
             return
 
         self._stop_event.set()
@@ -93,18 +101,18 @@ class WindowsAgent:
         stop_clipboard()
         stop_screenshot()
         self._running = False
-        logger.info("Agent stop requested from tray icon.")
+        self._notify("Agent Stopped", "The agent has been stopped.")
 
     def _quit_agent(self, icon, item):
         self._stop_event.set()
         stop_keylogger()
         stop_clipboard()
         stop_screenshot()
-        logger.info("Quit requested from tray icon.")
+        self._notify("Agent Quit", "The agent is quitting.")
         self.icon.stop()
 
     def run(self):
-        logger.info("Starting Windows tray icon...")
+        self._notify("Agent Starting", "Starting Windows tray icon...")
         self.icon.run()
 
 
