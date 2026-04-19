@@ -1,50 +1,40 @@
 import os
-import tempfile
-from pathlib import Path
 
-try:
-    import fcntl
-except ImportError:
-    fcntl = None
+from config.settings import APP_NAME
 
+WINDOWS_MUTEX = f"Local\\{APP_NAME}-single-instance"
 
-class SingleInstance:
-    """Prevent multiple agent instances from running simultaneously."""
+def another_mac_instance_running() -> bool:
+    """
+    Check if another instance of the application is already running on macOS.
+    """
+    from AppKit import NSRunningApplication
+    from Foundation import NSBundle
 
-    def __init__(self, name: str = "alisium-agent"):
-        self.name = name
-        self.lock_file_path = Path(tempfile.gettempdir()) / f"{self.name}.lock"
-        self.lock_file = None
+    bundle_id = NSBundle.mainBundle().bundleIdentifier()
+    if not bundle_id:
+        return False
 
-    def acquire(self) -> bool:
-        """Try to acquire an exclusive lock. Returns True if acquired."""
-        self.lock_file_path.parent.mkdir(parents=True, exist_ok=True)
-        self.lock_file = open(self.lock_file_path, "w+")
-        self.lock_file.write(str(os.getpid()))
-        self.lock_file.flush()
+    current_pid = os.getpid()
+    running = NSRunningApplication.runningApplicationsWithBundleIdentifier_(bundle_id)
 
-        if fcntl is None:
+    for app in running:
+        if app.processIdentifier() != current_pid:
             return True
 
-        try:
-            fcntl.flock(self.lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)
-            return True
-        except OSError:
-            return False
+    return False
 
-    def release(self) -> None:
-        """Release the lock file."""
-        try:
-            if self.lock_file is None:
-                return
+def windows_single_instance():
+    """
+    Acquire a named Windows mutex for the tray app instance.
+    """
+    import win32api
+    import win32event
+    import winerror
 
-            if fcntl is not None:
-                fcntl.flock(self.lock_file, fcntl.LOCK_UN)
+    mutex = win32event.CreateMutex(None, False, WINDOWS_MUTEX)
 
-            self.lock_file.close()
-            self.lock_file = None
+    if win32api.GetLastError() == winerror.ERROR_ALREADY_EXISTS:
+        return None
 
-            if self.lock_file_path.exists():
-                self.lock_file_path.unlink()
-        except Exception:
-            pass
+    return mutex
