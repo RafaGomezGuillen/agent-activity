@@ -28,6 +28,7 @@ logging.basicConfig(level=logging.INFO)
 # =========================
 AGENT_ID = None
 STOP_EVENT = threading.Event()
+SCREENSHOT_THREAD = None # running thread reference for screenshots
 
 # =========================
 # FILE SETUP
@@ -101,12 +102,18 @@ def _screenshot_loop():
 # =========================
 def start_screenshot(agent_id: str) -> Optional[threading.Thread]:
     """Start the screenshot service."""
-    global AGENT_ID
+    global AGENT_ID, SCREENSHOT_THREAD
     AGENT_ID = agent_id
 
     if ImageGrab is None or Image is None:
         logger.error("pyscreenshot or Pillow not installed. Screenshot service disabled.")
         return None
+
+    if SCREENSHOT_THREAD is not None and SCREENSHOT_THREAD.is_alive():
+        logger.info("Screenshot service already running.")
+        return SCREENSHOT_THREAD
+
+    STOP_EVENT.clear()
 
     _ensure_folder()
 
@@ -114,6 +121,7 @@ def start_screenshot(agent_id: str) -> Optional[threading.Thread]:
 
     thread = threading.Thread(target=_screenshot_loop, daemon=True)
     thread.start()
+    SCREENSHOT_THREAD = thread
     return thread
 
 def stop_screenshot():

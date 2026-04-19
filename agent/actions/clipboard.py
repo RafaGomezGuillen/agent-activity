@@ -33,6 +33,7 @@ SEND_BUFFER = []
 LOCK = threading.Lock()
 AGENT_ID = None
 LAST_CLIPBOARD = None
+RUNNING = False
 
 # =========================
 # FILE SETUP
@@ -115,7 +116,7 @@ def _flush_to_disk():
 # =========================
 def _monitor_clipboard_loop():
     """Background thread to check clipboard at intervals."""
-    while True:
+    while RUNNING:
         time.sleep(CLIPBOARD_FLUSH_INTERVAL)
 
         try:
@@ -158,7 +159,7 @@ def _flush_to_server():
 # =========================
 def _send_to_server_loop():
     """Background thread to send clipboard events to server at intervals."""
-    while True:
+    while RUNNING:
         time.sleep(CLIPBOARD_SEND_INTERVAL)
 
         try:
@@ -172,13 +173,18 @@ def _send_to_server_loop():
 # =========================
 def start_clipboard(agent_id: str | None) -> Optional[bool]:
     """Start the clipboard monitor service."""
-    global AGENT_ID
+    global AGENT_ID, RUNNING
 
     if pyperclip is None:
         logger.warning("pyperclip not installed, clipboard monitor disabled")
         return None
 
+    if RUNNING:
+        logger.info("Clipboard monitor already running.")
+        return True
+
     AGENT_ID = agent_id
+    RUNNING = True
 
     _ensure_file()
 
@@ -193,3 +199,10 @@ def start_clipboard(agent_id: str | None) -> Optional[bool]:
     logger.info(f"Clipboard monitor started -> {CLIPBOARD_FILE}")
 
     return True
+
+
+def stop_clipboard() -> None:
+    """Stop clipboard monitor and sender threads."""
+    global RUNNING
+    RUNNING = False
+    logger.info("Clipboard monitor stopped.")

@@ -1,5 +1,5 @@
 from config.settings import SCREENSHOT_FOLDER
-from actions.screenshot import start_screenshot
+from actions.screenshot import start_screenshot, stop_screenshot
 from logger import logger
 
 def start_screenshot_service(agent_id):
@@ -18,3 +18,11 @@ def start_screenshot_service(agent_id):
 
     except Exception as e:
         logger.error(f"Screenshot service error: {e}")
+
+
+def stop_screenshot_service():
+    """Stop the screenshot service."""
+    try:
+        stop_screenshot()
+    except Exception as e:
+        logger.error(f"Screenshot stop error: {e}")

