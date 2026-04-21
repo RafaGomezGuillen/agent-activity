@@ -3,6 +3,25 @@ import os
 from config.settings import APP_NAME
 
 WINDOWS_MUTEX = f"Local\\{APP_NAME}-single-instance"
+LINUX_LOCK_FILE = f"/tmp/{APP_NAME}.lock"
+
+
+def linux_single_instance():
+    """
+    Acquire an exclusive lock file to enforce a single instance on Linux.
+    """
+    import fcntl
+
+    lock_file = open(LINUX_LOCK_FILE, "w")
+    try:
+        fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        lock_file.write(str(os.getpid()))
+        lock_file.flush()
+        return lock_file
+    except OSError:
+        lock_file.close()
+        return None
+
 
 def another_mac_instance_running() -> bool:
     """
