@@ -106,6 +106,7 @@ app = BUNDLE(
     icon=platform_config.get("icon"),
     bundle_identifier=platform_config.get("osx_bundle_identifier"),
     info_plist={
+        "CFBundleDisplayName": COMMON_ARGS["name"],
         "NSPrincipalClass": "NSApplication",
         "NSHighResolutionCapable": "True",
         "LSUIElement": "True",
