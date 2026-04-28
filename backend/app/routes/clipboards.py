@@ -44,7 +44,7 @@ def ingest_clipboards(
 
 @router.get("/")
 def get_clipboards(
-    agent_id: str = Query(..., description="ID of the agent to retrieve clipboards for"),
+    agent_id: str | None = Query(None, description="ID of the agent to retrieve clipboards for"),
     start_time: str | None = Query(None, description="Filter by start time (eg. '2024-06-01T00:00:00Z')"),
     end_time: str | None = Query(None, description="Filter by end time (eg. '2024-06-01T00:00:00Z')"),
     app: str | None = Query(None, description="Filter by application name (case-insensitive, partial match)"),
@@ -53,9 +53,12 @@ def get_clipboards(
     db: Session = Depends(get_db),
 ):
     """
-    Retrieve clipboards for a specific agent with optional filtering by time range and application.
+    Retrieve clipboards with optional filtering by agent, time range and application.
     """
-    query = db.query(Clipboard).filter(Clipboard.agent_id == agent_id)
+    query = db.query(Clipboard)
+
+    if agent_id:
+        query = query.filter(Clipboard.agent_id == agent_id)
 
     if start_time:
         query = query.filter(
@@ -90,7 +93,7 @@ def get_clipboards(
 
 @router.get("/download")
 def download_clipboards(
-    agent_id: str = Path(..., description="ID of the agent to download clipboards for"), 
+    agent_id: str = Path(..., description="ID of the agent to download clipboards for"),
     db: Session = Depends(get_db)
 ):
     """

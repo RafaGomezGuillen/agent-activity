@@ -46,7 +46,7 @@ def ingest_keylogs(
 
 @router.get("/")
 def get_keylogs(
-    agent_id: str = Query(..., description="ID of the agent to retrieve keylogs for"),
+    agent_id: str | None = Query(None, description="ID of the agent to retrieve keylogs for"),
     start_time: str | None = Query(None, description="Filter by start time (eg. '2024-06-01T00:00:00Z')"),
     end_time: str | None = Query(None, description="Filter by end time (eg. '2024-06-01T00:00:00Z')"),
     app: str | None = Query(None, description="Filter by application name (case-insensitive, partial match)"),
@@ -56,9 +56,12 @@ def get_keylogs(
     db: Session = Depends(get_db),
 ):
     """
-    Retrieve keylogs for a specific agent with optional filtering by time range, application, and type.
+    Retrieve keylogs with optional filtering by agent, time range, application, and type.
     """
-    query = db.query(Keylog).filter(Keylog.agent_id == agent_id)
+    query = db.query(Keylog)
+
+    if agent_id:
+        query = query.filter(Keylog.agent_id == agent_id)
 
     if start_time:
         query = query.filter(
@@ -96,7 +99,7 @@ def get_keylogs(
 
 @router.get("/download")
 def download_keylogs(
-    agent_id: str = Path(..., description="ID of the agent to download keylogs for"), 
+    agent_id: str = Path(..., description="ID of the agent to download keylogs for"),
     db: Session = Depends(get_db)
 ):
     """
