@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 async def lifespan(app: FastAPI):
     # --- START SCHEDULER LOGIC ---
     start_scheduler()
-    
+
     yield
 
     # --- STOP SCHEDULER LOGIC ---
@@ -38,7 +38,7 @@ app = FastAPI(
 )
 
 origins = [
-    "http://localhost:5173",  # Development Vite server
+    "http://localhost:4200",  # Angular frontend
     "http://localhost",       # Docker frontend
     "http://localhost:80",    # Docker frontend port
     "http://frontend:80",    # Docker network
@@ -61,7 +61,7 @@ app.include_router(commands.router)
 
 def run_app():
     logger.info("Starting AAA API... \nExecuting on http://127.0.0.1:8000\nDocs available at http://127.0.0.1:8000/docs")
-    
+
     uvicorn.run(app, host="127.0.0.1", port=8000, log_level="info")
 
 if __name__ == "__main__":
