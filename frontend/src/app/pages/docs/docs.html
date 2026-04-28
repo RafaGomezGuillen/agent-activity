@@ -1,0 +1,45 @@
+<div class="min-h-full">
+  <app-page-header title="Documentation" subtitle="Technical reference and usage guide" breadcrumb="home / docs"></app-page-header>
+
+  <div class="max-w-4xl space-y-6">
+    <!-- API Reference -->
+    <div class="rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] overflow-hidden">
+      <div class="px-5 py-4 border-b border-[var(--border-color)]">
+        <h2 class="text-cyan-400 font-mono text-xs uppercase tracking-wider flex items-center gap-2">
+          <i class="pi pi-server"></i> API Endpoints
+        </h2>
+      </div>
+      <div class="p-5 space-y-4 font-mono text-sm">
+        <div *ngFor="let section of apiSections">
+          <h3 class="text-[var(--text-primary)] font-semibold mb-2">{{ section.name }}</h3>
+          <div class="space-y-1 ml-4">
+            <div *ngFor="let ep of section.endpoints" class="flex items-start gap-3">
+              <span class="px-1.5 py-0.5 rounded text-xs font-bold shrink-0"
+                [class]="ep.method === 'GET' ? 'bg-emerald-500/10 text-emerald-400' : ep.method === 'POST' ? 'bg-cyan-500/10 text-cyan-400' : 'bg-amber-500/10 text-amber-400'">
+                {{ ep.method }}
+              </span>
+              <span class="text-[var(--text-secondary)] text-xs break-all">{{ ep.path }}</span>
+              <span class="text-[var(--text-muted)] text-xs hidden md:block">— {{ ep.desc }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Commands Reference -->
+    <div class="rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] p-5">
+      <h2 class="text-cyan-400 font-mono text-xs uppercase tracking-wider mb-4 flex items-center gap-2">
+        <i class="pi pi-terminal"></i> Available Commands
+      </h2>
+      <div class="space-y-4 font-mono text-sm">
+        <div *ngFor="let cmd of commandDocs" class="border border-[var(--border-color)] rounded p-4">
+          <div class="text-[var(--text-primary)] font-semibold mb-1">{{ cmd.name }}</div>
+          <div class="text-[var(--text-muted)] text-xs mb-2">{{ cmd.desc }}</div>
+          <div class="text-xs text-emerald-400 bg-[var(--bg-primary)] rounded p-2 border border-[var(--border-color)]">
+            <pre>{{ cmd.example }}</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

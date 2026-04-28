@@ -1,0 +1,126 @@
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&display=swap");
+@import "tailwindcss";
+@import "primeicons/primeicons.css";
+
+/* Class-based dark mode for Tailwind v4 */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* === CSS Variables === */
+:root {
+  --font-mono: "Fira Code", "Courier New", monospace;
+  --font-sans: "Inter", system-ui, sans-serif;
+
+  /* Light mode */
+  --bg-primary: #f1f5f9;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --bg-sidebar: #1e293b;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --border-color: #e2e8f0;
+  --accent-primary: #0ea5e9;
+}
+
+.dark {
+  /* Dark mode */
+  --bg-primary: #08091a;
+  --bg-secondary: #0d1117;
+  --bg-card: #0f1525;
+  --bg-sidebar: #060b14;
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #475569;
+  --border-color: #1a2744;
+  --accent-primary: #38bdf8;
+}
+
+/* === Global Resets === */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+/* === Scrollbar === */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* === PrimeNG Overrides (dark cybersecurity theme) === */
+.p-datatable .p-datatable-thead > tr > th {
+  background: var(--bg-secondary) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-muted) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.7rem !important;
+  letter-spacing: 0.08em !important;
+}
+
+.p-datatable .p-datatable-tbody > tr {
+  background: var(--bg-card) !important;
+  border-color: var(--border-color) !important;
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+  border-color: var(--border-color) !important;
+  color: var(--text-secondary) !important;
+}
+
+.p-paginator {
+  background: transparent !important;
+}
+
+.p-tree {
+  background: transparent !important;
+  border: none !important;
+  color: var(--text-secondary) !important;
+}
+
+.p-tree .p-tree-node-label {
+  font-family: var(--font-mono) !important;
+  font-size: 0.85rem !important;
+}
+
+.p-skeleton {
+  background-color: var(--border-color) !important;
+}
+
+/* Monospace for code-like content */
+.font-mono {
+  font-family: var(--font-mono) !important;
+}
+
+/* Link reset */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Active nav link */
+.nav-item.active {
+  border-left-color: #38bdf8 !important;
+  color: #38bdf8 !important;
+}

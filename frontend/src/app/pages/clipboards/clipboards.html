@@ -1,0 +1,68 @@
+<div class="min-h-full">
+  <app-page-header title="Clipboards" subtitle="Global clipboard capture across all agents" breadcrumb="home / clipboards"></app-page-header>
+
+  <!-- Filters -->
+  <div class="rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] p-4 mb-6">
+    <div class="flex flex-col md:flex-row gap-3 items-end flex-wrap">
+      <div class="w-full md:w-48">
+        <label class="block text-[var(--text-muted)] text-xs font-mono mb-1.5">AGENT</label>
+        <p-select [(ngModel)]="agentFilter" [options]="agentOptions" optionLabel="label" optionValue="value" class="w-full" (onChange)="applyFilters()"></p-select>
+      </div>
+      <div class="flex-1 min-w-36">
+        <label class="block text-[var(--text-muted)] text-xs font-mono mb-1.5">APPLICATION</label>
+        <input pInputText [(ngModel)]="appFilter" placeholder="Filter by app..." class="w-full font-mono text-sm" />
+      </div>
+      <div class="flex-1 min-w-44">
+        <label class="block text-[var(--text-muted)] text-xs font-mono mb-1.5">DATE RANGE</label>
+        <p-datepicker [(ngModel)]="dateRange" selectionMode="range" [showIcon]="true" placeholder="Select range" class="w-full" dateFormat="yy-mm-dd"></p-datepicker>
+      </div>
+      <div class="flex gap-2">
+        <button pButton label="Apply" icon="pi pi-filter" class="p-button-sm p-button-outlined" (click)="applyFilters()"></button>
+        <button pButton label="Clear" icon="pi pi-times" class="p-button-sm p-button-text" (click)="clearFilters()"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] overflow-hidden">
+    <div class="px-5 py-4 border-b border-[var(--border-color)]">
+      <span class="text-[var(--text-muted)] text-xs font-mono">{{ total }} records</span>
+    </div>
+
+    <div *ngIf="loading" class="p-5 space-y-3">
+      <p-skeleton height="2.5rem" *ngFor="let i of [1,2,3,4,5]"></p-skeleton>
+    </div>
+
+    <p-table *ngIf="!loading" [value]="clipboards" styleClass="p-datatable-sm">
+      <ng-template pTemplate="header">
+        <tr class="text-[var(--text-muted)] text-xs font-mono uppercase">
+          <th style="width:160px">Timestamp</th>
+          <th style="width:160px">Agent</th>
+          <th style="width:140px">Application</th>
+          <th>Value</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-item>
+        <tr class="hover:bg-[var(--bg-secondary)] transition-colors">
+          <td class="font-mono text-xs text-[var(--text-muted)]">{{ item.timestamp | date:'medium' }}</td>
+          <td>
+            <a [routerLink]="['/agents', item.agent_id]" class="text-cyan-400 hover:underline font-mono text-xs">
+              {{ getAgentHostname(item.agent_id) }}
+            </a>
+          </td>
+          <td>
+            <span class="px-2 py-0.5 rounded text-xs font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">{{ item.app || '—' }}</span>
+          </td>
+          <td class="font-mono text-sm text-[var(--text-primary)] max-w-0 truncate" style="max-width:400px" [title]="item.value">{{ item.value || '—' }}</td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr><td colspan="4" class="text-center text-[var(--text-muted)] font-mono text-sm py-8">No clipboard entries found.</td></tr>
+      </ng-template>
+    </p-table>
+
+    <div *ngIf="!loading && total > limit" class="p-3 border-t border-[var(--border-color)] flex justify-center">
+      <p-paginator [rows]="limit" [totalRecords]="total" [rowsPerPageOptions]="[25,50,100]" (onPageChange)="onPageChange($event)"></p-paginator>
+    </div>
+  </div>
+</div>
