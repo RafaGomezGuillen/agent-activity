@@ -1,12 +1,24 @@
-<nav class="flex flex-col h-full w-56 border-r border-[var(--border-color)] bg-[var(--bg-sidebar)] shrink-0">
+<nav
+  class="h-lvh w-56 border-r border-[var(--border-color)] bg-[var(--bg-sidebar)] shrink-0"
+>
   <!-- Logo -->
-  <div class="flex items-center gap-3 px-5 py-5 border-b border-[var(--border-color)]">
-    <div class="w-8 h-8 rounded bg-cyan-500/20 flex items-center justify-center">
+  <div
+    class="flex items-center gap-3 px-5 py-5 h-16 border-b border-[var(--border-color)]"
+  >
+    <div
+      class="w-8 h-8 rounded bg-cyan-500/20 flex items-center justify-center"
+    >
       <i class="pi pi-shield text-cyan-400 text-sm"></i>
     </div>
     <div>
-      <div class="text-[var(--text-primary)] font-bold text-sm tracking-wider font-mono">Agent</div>
-      <div class="text-[var(--text-muted)] text-xs font-mono">activity monitor</div>
+      <div
+        class="text-[var(--text-primary)] font-bold text-sm tracking-wider font-mono"
+      >
+        Agent
+      </div>
+      <div class="text-[var(--text-muted)] text-xs font-mono">
+        activity monitor
+      </div>
     </div>
   </div>
 
@@ -17,16 +29,12 @@
         [routerLink]="item.route"
         [routerLinkActiveOptions]="{ exact: item.exact || false }"
         routerLinkActive="active"
+        (click)="onNavigate()"
         class="nav-item flex items-center gap-3 px-3 py-2.5 rounded text-[var(--text-secondary)] hover:text-[var(--text-primary)] cursor-pointer text-sm border-l-2 border-transparent no-underline"
       >
         <i [class]="item.icon" class="text-base w-4 text-center"></i>
         <span class="font-mono">{{ item.label }}</span>
       </a>
     </ng-container>
-  </div>
-
-  <!-- Footer -->
-  <div class="px-4 py-3 border-t border-[var(--border-color)]">
-    <div class="text-[var(--text-muted)] text-xs font-mono text-center">v0.0.1</div>
   </div>
 </nav>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from "@angular/core";
 
 interface NavItem {
   label: string;
@@ -8,24 +8,25 @@ interface NavItem {
 }
 
 @Component({
-  selector: 'app-sidebar',
-  templateUrl: './sidebar.html',
+  selector: "app-sidebar",
+  templateUrl: "./sidebar.html",
   standalone: false,
-  styles: [`
-    :host { display: block; }
-    .nav-item { transition: all 0.2s ease; }
-    .nav-item:hover { background: rgba(56, 189, 248, 0.08); }
-    .nav-item.active { background: rgba(56, 189, 248, 0.12); border-left-color: #38bdf8; }
-  `],
+  styleUrls: ["./sidebar.css"],
 })
 export class SidebarComponent {
+  @Output() navigateItem = new EventEmitter<void>();
+
   navItems: NavItem[] = [
-    { label: 'Dashboard', icon: 'pi pi-th-large', route: '/', exact: true },
-    { label: 'Agents', icon: 'pi pi-server', route: '/agents' },
-    { label: 'Clipboards', icon: 'pi pi-copy', route: '/clipboards' },
-    { label: 'Keylogs', icon: 'pi pi-keyboard', route: '/keylogs' },
-    { label: 'Screenshots', icon: 'pi pi-image', route: '/screenshots' },
-    { label: 'About', icon: 'pi pi-info-circle', route: '/about' },
-    { label: 'Docs', icon: 'pi pi-book', route: '/docs' },
+    { label: "Dashboard", icon: "pi pi-th-large", route: "/", exact: true },
+    { label: "Agents", icon: "pi pi-server", route: "/agents" },
+    { label: "Clipboards", icon: "pi pi-clipboard", route: "/clipboards" },
+    { label: "Keylogs", icon: "pi pi-align-justify", route: "/keylogs" },
+    { label: "Screenshots", icon: "pi pi-image", route: "/screenshots" },
+    { label: "About", icon: "pi pi-info-circle", route: "/about" },
+    { label: "Docs", icon: "pi pi-book", route: "/docs" },
   ];
+
+  onNavigate(): void {
+    this.navigateItem.emit();
+  }
 }

@@ -1,7 +1,16 @@
 <header
-  class="flex items-center justify-between px-6 py-3 border-b border-[var(--border-color)] bg-[var(--bg-secondary)] shrink-0"
+  class="flex items-center justify-between px-5 py-5 h-16 border-b border-[var(--border-color)] bg-[var(--bg-secondary)] shrink-0"
 >
   <div class="flex items-center gap-2">
+    <div class="lg:hidden">
+      <button
+        pButton
+        icon="pi pi-bars"
+        class="p-button-text p-button-sm p-button-rounded"
+        pTooltip="Open Menu"
+        (click)="toggleSidebar.emit()"
+      ></button>
+    </div>
     <span class="text-[var(--text-muted)] text-xs font-mono">SYS://</span>
     <span class="text-cyan-400 text-xs font-mono">ACTIVE</span>
     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>

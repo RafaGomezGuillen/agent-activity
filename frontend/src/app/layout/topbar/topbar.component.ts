@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { ThemeService } from '../../core/services/theme.service';
 
 @Component({
@@ -8,5 +8,7 @@ import { ThemeService } from '../../core/services/theme.service';
   styles: [],
 })
 export class TopbarComponent {
+  @Output() toggleSidebar = new EventEmitter<void>();
+
   constructor(public themeService: ThemeService) {}
 }

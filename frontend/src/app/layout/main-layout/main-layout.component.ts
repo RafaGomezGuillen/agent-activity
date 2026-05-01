@@ -4,30 +4,17 @@ import { Component } from "@angular/core";
   selector: "app-main-layout",
   templateUrl: "./main-layout.html",
   standalone: false,
-  styles: [
-    `
-      :host {
-        display: flex;
-        height: 100vh;
-        overflow: hidden;
-      }
-      .layout-wrapper {
-        display: flex;
-        width: 100%;
-        height: 100%;
-      }
-      .layout-content {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-      }
-      .page-content {
-        flex: 1;
-        overflow-y: auto;
-        padding: 1.5rem;
-      }
-    `,
-  ],
+  styleUrls: ["./main-layout.css"],
 })
-export class MainLayoutComponent {}
+export class MainLayoutComponent {
+  isSidebarOpen = false;
+
+  toggleSidebar(): void {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
+
+  closeSidebar(): void {
+    this.isSidebarOpen = false;
+  }
+}
+

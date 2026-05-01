@@ -1,9 +1,18 @@
-<div class="layout-wrapper">
-  <app-sidebar></app-sidebar>
+<div class="main-layout-container">
+  <div
+    class="layout-backdrop"
+    *ngIf="isSidebarOpen"
+    (click)="closeSidebar()"
+  ></div>
+
+  <aside class="layout-sidebar" [class.open]="isSidebarOpen">
+    <app-sidebar (navigateItem)="closeSidebar()"></app-sidebar>
+  </aside>
+
   <div class="layout-content">
-    <app-topbar></app-topbar>
-    <div class="page-content">
+    <app-topbar (toggleSidebar)="toggleSidebar()"></app-topbar>
+    <main>
       <router-outlet></router-outlet>
-    </div>
+    </main>
   </div>
 </div>
