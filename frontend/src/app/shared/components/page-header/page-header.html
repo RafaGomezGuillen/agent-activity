@@ -1,0 +1,54 @@
+<div
+  *ngIf="breadcrumbRootLabel"
+  class="flex items-center gap-2 text-[var(--text-muted)] text-xs font-mono mb-4"
+>
+  <ng-container *ngIf="breadcrumbRootLink; else rootText">
+    <a
+      [routerLink]="breadcrumbRootLink"
+      pTooltip="Go to {{ breadcrumbRootLabel }}"
+      class="text-cyan-400 hover:underline"
+    >
+      {{ breadcrumbRootLabel }}
+    </a>
+  </ng-container>
+  <ng-template #rootText>
+    <span>{{ breadcrumbRootLabel }}</span>
+  </ng-template>
+
+  <ng-container *ngIf="breadcrumbCurrent">
+    <i class="pi pi-chevron-right text-xs"></i>
+
+    <ng-container *ngIf="breadcrumbMiddleLabel; else noMiddle">
+      <ng-container *ngIf="breadcrumbMiddleLink; else middleText">
+        <a
+          [routerLink]="breadcrumbMiddleLink"
+          pTooltip="Go to {{ breadcrumbMiddleLabel }}"
+          class="text-cyan-400 hover:underline"
+        >
+          {{ breadcrumbMiddleLabel }}
+        </a>
+      </ng-container>
+      <ng-template #middleText>
+        <span>{{ breadcrumbMiddleLabel }}</span>
+      </ng-template>
+      <i class="pi pi-chevron-right text-xs"></i>
+      <span>{{ breadcrumbCurrent }}</span>
+    </ng-container>
+
+    <ng-template #noMiddle>
+      <span>{{ breadcrumbCurrent }}</span>
+    </ng-template>
+  </ng-container>
+</div>
+
+<div class="mb-6 mt-6">
+  <h1 class="text-[var(--text-primary)] text-2xl font-bold font-mono mt-2.5">
+    <span class="text-cyan-500">// </span>{{ title }}
+  </h1>
+  <p
+    *ngIf="subtitle"
+    class="text-[var(--text-secondary)] text-sm mt-2 font-mono"
+  >
+    {{ subtitle }}
+  </p>
+</div>
