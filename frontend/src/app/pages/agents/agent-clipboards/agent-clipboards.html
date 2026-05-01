@@ -1,13 +1,13 @@
 <div class="min-h-full">
-  <div class="flex items-center gap-2 text-[var(--text-muted)] text-xs font-mono mb-4">
-    <a routerLink="/agents" class="text-cyan-400 hover:underline">agents</a>
-    <i class="pi pi-chevron-right text-xs"></i>
-    <a [routerLink]="['/agents', agentId]" class="text-cyan-400 hover:underline">{{ agent?.hostname || agentId }}</a>
-    <i class="pi pi-chevron-right text-xs"></i>
-    <span>clipboards</span>
-  </div>
-
-  <app-page-header title="Clipboards" subtitle="Clipboard capture history for this agent" breadcrumb="agents / clipboards"></app-page-header>
+  <app-page-header
+    title="Clipboards"
+    subtitle="Clipboard capture history for this agent"
+    breadcrumbRootLabel="agents"
+    breadcrumbRootLink="/agents"
+    [breadcrumbMiddleLabel]="agent?.hostname || agentId"
+    [breadcrumbMiddleLink]="['/agents', agentId]"
+    breadcrumbCurrent="clipboards"
+  ></app-page-header>
 
   <!-- Filters -->
   <div class="rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] p-4 mb-6">

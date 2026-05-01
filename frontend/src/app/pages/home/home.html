@@ -2,32 +2,70 @@
   <app-page-header
     title="Dashboard"
     subtitle="System overview and agent activity summary"
-    breadcrumb="home / dashboard"
+    breadcrumbRootLabel="home"
+    breadcrumbRootLink="/"
+    breadcrumbCurrent="dashboard"
   ></app-page-header>
 
   <!-- Stats Grid -->
   <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-    <app-stat-card label="Total Agents" [value]="totalAgents" icon="pi pi-server" color="cyan"></app-stat-card>
-    <app-stat-card label="Online" [value]="onlineAgents" icon="pi pi-circle-fill" color="emerald"></app-stat-card>
-    <app-stat-card label="Offline" [value]="offlineAgents" icon="pi pi-circle" color="red"></app-stat-card>
+    <app-stat-card
+      label="Total Agents"
+      [value]="totalAgents"
+      icon="pi pi-server"
+      color="cyan"
+    ></app-stat-card>
+    <app-stat-card
+      label="Online"
+      [value]="onlineAgents"
+      icon="pi pi-circle-fill"
+      color="emerald"
+    ></app-stat-card>
+    <app-stat-card
+      label="Offline"
+      [value]="offlineAgents"
+      icon="pi pi-circle"
+      color="red"
+    ></app-stat-card>
   </div>
 
   <!-- Terminal banner -->
-  <div class="rounded-lg border border-cyan-500/20 bg-cyan-500/5 p-5 mb-8 font-mono text-sm">
+  <div
+    class="rounded-lg border border-cyan-500/20 bg-cyan-500/5 p-5 mb-8 font-mono text-sm"
+  >
     <div class="text-cyan-400 mb-2">root&#64;agent-activity:~#</div>
     <div class="text-[var(--text-secondary)] leading-relaxed">
-      <span class="text-emerald-400">{{ totalAgents }}</span> agents registered &mdash;
-      <span class="text-emerald-400">{{ onlineAgents }}</span> active
-      <span *ngIf="offlineAgents > 0"> &mdash; <span class="text-red-400">{{ offlineAgents }}</span> unreachable</span>
+      <span class="text-emerald-400">{{ totalAgents }}</span> agents registered
+      &mdash; <span class="text-emerald-400">{{ onlineAgents }}</span> active
+      <span *ngIf="offlineAgents > 0">
+        &mdash;
+        <span class="text-red-400">{{ offlineAgents }}</span> unreachable</span
+      >
     </div>
-    <div class="text-[var(--text-muted)] mt-2 text-xs">Navigate to <a routerLink="/agents" class="text-cyan-400 hover:underline">/agents</a> to manage targets.</div>
+    <div class="text-[var(--text-muted)] mt-2 text-xs">
+      Navigate to
+      <a routerLink="/agents" class="text-cyan-400 hover:underline">/agents</a>
+      to manage targets.
+    </div>
   </div>
 
   <!-- Recent Agents -->
-  <div class="rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] overflow-hidden">
-    <div class="flex items-center justify-between px-5 py-4 border-b border-[var(--border-color)]">
-      <h2 class="text-[var(--text-primary)] font-mono font-semibold text-sm tracking-wider">RECENT AGENTS</h2>
-      <a routerLink="/agents" class="text-cyan-400 text-xs font-mono hover:underline">VIEW ALL →</a>
+  <div
+    class="rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] overflow-hidden"
+  >
+    <div
+      class="flex items-center justify-between px-5 py-4 border-b border-[var(--border-color)]"
+    >
+      <h2
+        class="text-[var(--text-primary)] font-mono font-semibold text-sm tracking-wider"
+      >
+        RECENT AGENTS
+      </h2>
+      <a
+        routerLink="/agents"
+        class="text-cyan-400 text-xs font-mono hover:underline"
+        >VIEW ALL →</a
+      >
     </div>
 
     <div *ngIf="loading" class="p-5 space-y-3">
@@ -53,20 +91,37 @@
       <ng-template pTemplate="body" let-agent>
         <tr class="hover:bg-[var(--bg-secondary)] transition-colors">
           <td><app-status-badge [online]="agent.status"></app-status-badge></td>
-          <td class="font-mono text-[var(--text-primary)] text-sm">{{ agent.hostname }}</td>
-          <td class="font-mono text-[var(--text-secondary)] text-sm">{{ agent.ip_address }}</td>
-          <td class="font-mono text-[var(--text-secondary)] text-sm">{{ agent.os }}</td>
-          <td class="font-mono text-[var(--text-muted)] text-xs">{{ agent.last_seen | date:'short' }}</td>
+          <td class="font-mono text-[var(--text-primary)] text-sm">
+            {{ agent.hostname }}
+          </td>
+          <td class="font-mono text-[var(--text-secondary)] text-sm">
+            {{ agent.ip_address }}
+          </td>
+          <td class="font-mono text-[var(--text-secondary)] text-sm">
+            {{ agent.os }}
+          </td>
+          <td class="font-mono text-[var(--text-muted)] text-xs">
+            {{ agent.last_seen | date:'short' }}
+          </td>
           <td>
             <a [routerLink]="['/agents', agent.id]">
-              <button pButton icon="pi pi-arrow-right" class="p-button-text p-button-sm p-button-rounded"></button>
+              <button
+                pButton
+                icon="pi pi-arrow-right"
+                class="p-button-text p-button-sm p-button-rounded"
+              ></button>
             </a>
           </td>
         </tr>
       </ng-template>
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="6" class="text-center text-[var(--text-muted)] font-mono text-sm py-8">No agents registered.</td>
+          <td
+            colspan="6"
+            class="text-center text-[var(--text-muted)] font-mono text-sm py-8"
+          >
+            No agents registered.
+          </td>
         </tr>
       </ng-template>
     </p-table>

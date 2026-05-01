@@ -1,6 +1,8 @@
 <div class="min-h-full">
   <!-- Breadcrumb -->
-  <div class="flex items-center gap-2 text-[var(--text-muted)] text-xs font-mono mb-4">
+  <div
+    class="flex items-center gap-2 text-[var(--text-muted)] text-xs font-mono mb-4"
+  >
     <a routerLink="/agents" class="text-cyan-400 hover:underline">agents</a>
     <i class="pi pi-chevron-right text-xs"></i>
     <span>{{ agent?.hostname || agentId }}</span>
@@ -14,7 +16,9 @@
 
   <ng-container *ngIf="!loading && agent">
     <!-- Header -->
-    <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
+    <div
+      class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6"
+    >
       <div>
         <div class="flex items-center gap-3 mb-1">
           <h1 class="text-[var(--text-primary)] text-2xl font-bold font-mono">
@@ -22,7 +26,9 @@
           </h1>
           <app-status-badge [online]="agent.status"></app-status-badge>
         </div>
-        <p class="text-[var(--text-muted)] text-xs font-mono">ID: {{ agent.id }}</p>
+        <p class="text-[var(--text-muted)] text-xs font-mono">
+          ID: {{ agent.id }}
+        </p>
       </div>
     </div>
 
@@ -41,68 +47,140 @@
     <!-- Info Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
       <!-- Network -->
-      <div class="rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] p-5">
-        <h3 class="text-cyan-400 font-mono text-xs uppercase tracking-wider mb-4 flex items-center gap-2">
+      <div
+        class="rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] p-5"
+      >
+        <h3
+          class="text-cyan-400 font-mono text-xs uppercase tracking-wider mb-4 flex items-center gap-2"
+        >
           <i class="pi pi-globe"></i> Network
         </h3>
         <dl class="space-y-2 text-sm font-mono">
-          <div class="flex justify-between"><dt class="text-[var(--text-muted)]">IP Address</dt><dd class="text-[var(--text-primary)]">{{ agent.ip_address }}</dd></div>
-          <div class="flex justify-between"><dt class="text-[var(--text-muted)]">MAC Address</dt><dd class="text-[var(--text-primary)]">{{ agent.mac_address }}</dd></div>
+          <div class="flex justify-between">
+            <dt class="text-[var(--text-muted)]">IP Address</dt>
+            <dd class="text-[var(--text-primary)]">{{ agent.ip_address }}</dd>
+          </div>
+          <div class="flex justify-between">
+            <dt class="text-[var(--text-muted)]">MAC Address</dt>
+            <dd class="text-[var(--text-primary)]">{{ agent.mac_address }}</dd>
+          </div>
         </dl>
       </div>
 
       <!-- System -->
-      <div class="rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] p-5">
-        <h3 class="text-cyan-400 font-mono text-xs uppercase tracking-wider mb-4 flex items-center gap-2">
+      <div
+        class="rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] p-5"
+      >
+        <h3
+          class="text-cyan-400 font-mono text-xs uppercase tracking-wider mb-4 flex items-center gap-2"
+        >
           <i class="pi pi-desktop"></i> System
         </h3>
         <dl class="space-y-2 text-sm font-mono">
-          <div class="flex justify-between"><dt class="text-[var(--text-muted)]">OS</dt><dd class="text-[var(--text-primary)]">{{ agent.os }} {{ agent.os_release }}</dd></div>
-          <div class="flex justify-between"><dt class="text-[var(--text-muted)]">Architecture</dt><dd class="text-[var(--text-primary)]">{{ agent.architecture || '—' }}</dd></div>
-          <div class="flex justify-between"><dt class="text-[var(--text-muted)]">Cores</dt><dd class="text-[var(--text-primary)]">{{ agent.physical_cores }}P / {{ agent.total_cores }}T</dd></div>
-          <div class="flex justify-between"><dt class="text-[var(--text-muted)]">Max Freq</dt><dd class="text-[var(--text-primary)]">{{ agent.max_frequency || '—' }}</dd></div>
+          <div class="flex justify-between">
+            <dt class="text-[var(--text-muted)]">OS</dt>
+            <dd class="text-[var(--text-primary)]">
+              {{ agent.os }} {{ agent.os_release }}
+            </dd>
+          </div>
+          <div class="flex justify-between">
+            <dt class="text-[var(--text-muted)]">Architecture</dt>
+            <dd class="text-[var(--text-primary)]">
+              {{ agent.architecture || '—' }}
+            </dd>
+          </div>
+          <div class="flex justify-between">
+            <dt class="text-[var(--text-muted)]">Cores</dt>
+            <dd class="text-[var(--text-primary)]">
+              {{ agent.physical_cores }}P / {{ agent.total_cores }}T
+            </dd>
+          </div>
+          <div class="flex justify-between">
+            <dt class="text-[var(--text-muted)]">Max Freq</dt>
+            <dd class="text-[var(--text-primary)]">
+              {{ agent.max_frequency || '—' }}
+            </dd>
+          </div>
         </dl>
       </div>
 
       <!-- Timestamps -->
-      <div class="rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] p-5">
-        <h3 class="text-cyan-400 font-mono text-xs uppercase tracking-wider mb-4 flex items-center gap-2">
+      <div
+        class="rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] p-5"
+      >
+        <h3
+          class="text-cyan-400 font-mono text-xs uppercase tracking-wider mb-4 flex items-center gap-2"
+        >
           <i class="pi pi-clock"></i> Activity
         </h3>
         <dl class="space-y-2 text-sm font-mono">
-          <div class="flex justify-between"><dt class="text-[var(--text-muted)]">Registered</dt><dd class="text-[var(--text-primary)]">{{ agent.created_at | date:'medium' }}</dd></div>
-          <div class="flex justify-between"><dt class="text-[var(--text-muted)]">Last Seen</dt><dd class="text-[var(--text-primary)]">{{ agent.last_seen | date:'medium' }}</dd></div>
+          <div class="flex justify-between">
+            <dt class="text-[var(--text-muted)]">Registered</dt>
+            <dd class="text-[var(--text-primary)]">
+              {{ agent.created_at | date:'medium' }}
+            </dd>
+          </div>
+          <div class="flex justify-between">
+            <dt class="text-[var(--text-muted)]">Last Seen</dt>
+            <dd class="text-[var(--text-primary)]">
+              {{ agent.last_seen | date:'medium' }}
+            </dd>
+          </div>
         </dl>
       </div>
 
       <!-- Processor -->
-      <div class="rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] p-5">
-        <h3 class="text-cyan-400 font-mono text-xs uppercase tracking-wider mb-4 flex items-center gap-2">
+      <div
+        class="rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] p-5"
+      >
+        <h3
+          class="text-cyan-400 font-mono text-xs uppercase tracking-wider mb-4 flex items-center gap-2"
+        >
           <i class="pi pi-microchip"></i> Processor
         </h3>
-        <p class="text-[var(--text-primary)] text-sm font-mono break-words">{{ agent.processor || '—' }}</p>
+        <p class="text-[var(--text-primary)] text-sm font-mono break-words">
+          {{ agent.processor || '—' }}
+        </p>
       </div>
     </div>
 
     <!-- Metrics Preview Chart -->
-    <div class="rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] p-5">
+    <div
+      class="rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] p-5"
+    >
       <div class="flex items-center justify-between mb-4">
-        <h3 class="text-cyan-400 font-mono text-xs uppercase tracking-wider flex items-center gap-2">
+        <h3
+          class="text-cyan-400 font-mono text-xs uppercase tracking-wider flex items-center gap-2"
+        >
           <i class="pi pi-chart-line"></i> Recent Metrics
         </h3>
-        <a [routerLink]="['/agents', agentId, 'metrics']" class="text-cyan-400 text-xs font-mono hover:underline">VIEW ALL →</a>
+        <a
+          [routerLink]="['/agents', agentId, 'metrics']"
+          class="text-cyan-400 text-xs font-mono hover:underline"
+          >VIEW ALL →</a
+        >
       </div>
 
       <div *ngIf="metricsLoading" class="h-48 flex items-center justify-center">
         <p-skeleton height="12rem"></p-skeleton>
       </div>
 
-      <div *ngIf="!metricsLoading && metrics.length === 0" class="h-48 flex items-center justify-center">
-        <p class="text-[var(--text-muted)] font-mono text-sm">No metrics available.</p>
+      <div
+        *ngIf="!metricsLoading && metrics.length === 0"
+        class="h-48 flex items-center justify-center"
+      >
+        <p class="text-[var(--text-muted)] font-mono text-sm">
+          No metrics available.
+        </p>
       </div>
 
-      <div *ngIf="!metricsLoading && metrics.length > 0" style="height: 200px;">
-        <p-chart type="line" [data]="chartData" [options]="chartOptions" height="200px"></p-chart>
+      <div *ngIf="!metricsLoading && metrics.length > 0" style="height: 200px">
+        <p-chart
+          type="line"
+          [data]="chartData"
+          [options]="chartOptions"
+          height="200px"
+        ></p-chart>
       </div>
     </div>
   </ng-container>

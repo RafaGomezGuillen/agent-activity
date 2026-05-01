@@ -34,11 +34,11 @@ export class AgentDetailComponent implements OnInit {
   ngOnInit(): void {
     this.agentId = this.route.snapshot.paramMap.get('id') || '';
     this.navLinks = [
-      { label: 'Clipboards', icon: 'pi pi-copy', path: `/agents/${this.agentId}/clipboards` },
+      { label: 'Clipboards', icon: 'pi pi-clipboard', path: `/agents/${this.agentId}/clipboards` },
       { label: 'Metrics', icon: 'pi pi-chart-line', path: `/agents/${this.agentId}/metrics` },
-      { label: 'Keylogs', icon: 'pi pi-keyboard', path: `/agents/${this.agentId}/keylogs` },
+      { label: 'Keylogs', icon: 'pi pi-align-justify', path: `/agents/${this.agentId}/keylogs` },
       { label: 'Screenshots', icon: 'pi pi-image', path: `/agents/${this.agentId}/screenshots` },
-      { label: 'Commands', icon: 'pi pi-terminal', path: `/agents/${this.agentId}/commands` },
+      { label: 'Commands', icon: 'pi pi-code', path: `/agents/${this.agentId}/commands` },
     ];
     this.loadAgent();
     this.loadMetrics();
