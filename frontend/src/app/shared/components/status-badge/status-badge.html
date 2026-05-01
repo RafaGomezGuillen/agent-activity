@@ -1,5 +1,6 @@
 <span
   class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-xs font-mono font-medium"
+  pTooltip="{{ online ? 'Agent is currently online' : 'Agent is currently offline' }}"
   [class]="online
         ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
         : 'bg-red-500/10 text-red-400 border border-red-500/20'"

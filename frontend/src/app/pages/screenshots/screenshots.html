@@ -73,6 +73,7 @@
       *ngFor="let s of screenshots"
       class="group relative rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] overflow-hidden cursor-pointer hover:border-cyan-500/40 transition-all"
       (click)="openDialog(s)"
+      pTooltip="Taken at {{ s.created_at | date:'medium' }}"
     >
       <img
         [src]="getFileUrl(s)"
@@ -109,6 +110,7 @@
 
   <div *ngIf="!loading && total > limit" class="mt-6 flex justify-center">
     <p-paginator
+      [first]="offset"
       [rows]="limit"
       [totalRecords]="total"
       [rowsPerPageOptions]="[12,24,48]"

@@ -44,7 +44,12 @@
     </div>
     <div class="text-[var(--text-muted)] mt-2 text-xs">
       Navigate to
-      <a routerLink="/agents" class="text-cyan-400 hover:underline">/agents</a>
+      <a
+        routerLink="/agents"
+        class="text-cyan-400 hover:underline"
+        pTooltip="View all agents"
+        >/agents</a
+      >
       to manage targets.
     </div>
   </div>
@@ -63,6 +68,7 @@
       </h2>
       <a
         routerLink="/agents"
+        pTooltip="View all agents"
         class="text-cyan-400 text-xs font-mono hover:underline"
         >VIEW ALL →</a
       >
@@ -104,7 +110,10 @@
             {{ agent.last_seen | date:'short' }}
           </td>
           <td>
-            <a [routerLink]="['/agents', agent.id]">
+            <a
+              [routerLink]="['/agents', agent.id]"
+              pTooltip="View details for {{ agent.hostname }}"
+              class="text-cyan-400 hover:underline font-mono text-xs">
               <button
                 pButton
                 icon="pi pi-arrow-right"

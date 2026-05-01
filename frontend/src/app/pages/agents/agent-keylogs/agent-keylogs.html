@@ -68,7 +68,7 @@
     </p-table>
 
     <div *ngIf="!loading && total > limit" class="p-3 border-t border-[var(--border-color)] flex justify-center">
-      <p-paginator [rows]="limit" [totalRecords]="total" [rowsPerPageOptions]="[25,50,100]" (onPageChange)="onPageChange($event)"></p-paginator>
+      <p-paginator [first]="offset" [rows]="limit" [totalRecords]="total" [rowsPerPageOptions]="[25,50,100]" (onPageChange)="onPageChange($event)"></p-paginator>
     </div>
   </div>
 </div>

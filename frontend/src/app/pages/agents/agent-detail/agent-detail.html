@@ -3,7 +3,12 @@
   <div
     class="flex items-center gap-2 text-[var(--text-muted)] text-xs font-mono mb-4"
   >
-    <a routerLink="/agents" class="text-cyan-400 hover:underline">agents</a>
+    <a
+      pTooltip="View all agents"
+      routerLink="/agents"
+      class="text-cyan-400 hover:underline"
+      >agents</a
+    >
     <i class="pi pi-chevron-right text-xs"></i>
     <span>{{ agent?.hostname || agentId }}</span>
   </div>
@@ -37,6 +42,7 @@
       <a
         *ngFor="let link of navLinks"
         [routerLink]="link.path"
+        pTooltip="{{ link.tooltip }}"
         class="flex items-center gap-2 px-4 py-2 rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-secondary)] hover:text-cyan-400 hover:border-cyan-500/40 text-sm font-mono transition-all no-underline"
       >
         <i [class]="link.icon"></i>
@@ -156,6 +162,7 @@
         </h3>
         <a
           [routerLink]="['/agents', agentId, 'metrics']"
+          pTooltip="View all metrics for {{ agent.hostname }}"
           class="text-cyan-400 text-xs font-mono hover:underline"
           >VIEW ALL →</a
         >

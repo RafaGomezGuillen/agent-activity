@@ -10,52 +10,116 @@
   ></app-page-header>
 
   <!-- Filters -->
-  <div class="rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] p-4 mb-6">
+  <div
+    class="rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] p-4 mb-6"
+  >
     <div class="flex flex-col md:flex-row gap-3 items-end">
       <div class="flex-1">
-        <label class="block text-[var(--text-muted)] text-xs font-mono mb-1.5">DATE RANGE</label>
-        <p-datepicker [(ngModel)]="dateRange" selectionMode="range" [showIcon]="true" placeholder="Select range" class="w-full" dateFormat="yy-mm-dd"></p-datepicker>
+        <label class="block text-[var(--text-muted)] text-xs font-mono mb-1.5"
+          >DATE RANGE</label
+        >
+        <p-datepicker
+          [(ngModel)]="dateRange"
+          selectionMode="range"
+          [showIcon]="true"
+          placeholder="Select range"
+          class="w-full"
+          dateFormat="yy-mm-dd"
+        ></p-datepicker>
       </div>
       <div class="flex gap-2">
-        <button pButton label="Apply" icon="pi pi-filter" class="p-button-sm p-button-outlined" (click)="applyFilters()"></button>
-        <button pButton label="Clear" icon="pi pi-times" class="p-button-sm p-button-text" (click)="clearFilters()"></button>
+        <button
+          pButton
+          label="Apply"
+          icon="pi pi-filter"
+          class="p-button-sm p-button-outlined"
+          (click)="applyFilters()"
+        ></button>
+        <button
+          pButton
+          label="Clear"
+          icon="pi pi-times"
+          class="p-button-sm p-button-text"
+          (click)="clearFilters()"
+        ></button>
       </div>
     </div>
   </div>
 
   <!-- Gallery -->
-  <div *ngIf="loading" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+  <div
+    *ngIf="loading"
+    class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+  >
     <p-skeleton height="10rem" *ngFor="let i of [1,2,3,4,5,6,7,8]"></p-skeleton>
   </div>
 
-  <div *ngIf="!loading" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+  <div
+    *ngIf="!loading"
+    class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+  >
     <div
       *ngFor="let s of screenshots"
       class="group relative rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] overflow-hidden cursor-pointer hover:border-cyan-500/40 transition-all"
       (click)="openDialog(s)"
+      pTooltip="Taken at {{ s.created_at | date:'medium' }}"
     >
-      <img [src]="getFileUrl(s)" [alt]="s.filename" class="w-full h-36 object-cover" loading="lazy" />
+      <img
+        [src]="getFileUrl(s)"
+        [alt]="s.filename"
+        class="w-full h-36 object-cover"
+        loading="lazy"
+      />
       <div class="p-2">
-        <p class="text-[var(--text-muted)] text-xs font-mono truncate">{{ s.created_at | date:'short' }}</p>
+        <p class="text-[var(--text-muted)] text-xs font-mono truncate">
+          {{ s.created_at | date:'short' }}
+        </p>
       </div>
-      <div class="absolute inset-0 bg-cyan-500/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+      <div
+        class="absolute inset-0 bg-cyan-500/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+      >
         <i class="pi pi-search-plus text-2xl text-white"></i>
       </div>
     </div>
 
-    <div *ngIf="screenshots.length === 0" class="col-span-full text-center py-16">
+    <div
+      *ngIf="screenshots.length === 0"
+      class="col-span-full text-center py-16"
+    >
       <i class="pi pi-image text-4xl text-[var(--text-muted)] mb-4 block"></i>
       <p class="text-[var(--text-muted)] font-mono">No screenshots found.</p>
     </div>
   </div>
 
   <div *ngIf="!loading && total > limit" class="mt-6 flex justify-center">
-    <p-paginator [rows]="limit" [totalRecords]="total" [rowsPerPageOptions]="[12,24,48]" (onPageChange)="onPageChange($event)"></p-paginator>
+    <p-paginator
+      [first]="offset"
+      [rows]="limit"
+      [totalRecords]="total"
+      [rowsPerPageOptions]="[12,24,48]"
+      (onPageChange)="onPageChange($event)"
+    ></p-paginator>
   </div>
 
   <!-- Dialog -->
-  <p-dialog [(visible)]="dialogVisible" [modal]="true" [style]="{width: '90vw', maxWidth: '1000px'}" [header]="selectedScreenshot?.filename || ''" [closable]="true">
-    <img *ngIf="selectedScreenshot" [src]="getFileUrl(selectedScreenshot)" [alt]="selectedScreenshot.filename" class="w-full rounded" />
-    <p *ngIf="selectedScreenshot" class="text-[var(--text-muted)] text-xs font-mono mt-2 text-center">{{ selectedScreenshot.created_at | date:'medium' }}</p>
+  <p-dialog
+    [(visible)]="dialogVisible"
+    [modal]="true"
+    [style]="{width: '90vw', maxWidth: '1000px'}"
+    [header]="selectedScreenshot?.filename || ''"
+    [closable]="true"
+  >
+    <img
+      *ngIf="selectedScreenshot"
+      [src]="getFileUrl(selectedScreenshot)"
+      [alt]="selectedScreenshot.filename"
+      class="w-full rounded"
+    />
+    <p
+      *ngIf="selectedScreenshot"
+      class="text-[var(--text-muted)] text-xs font-mono mt-2 text-center"
+    >
+      {{ selectedScreenshot.created_at | date:'medium' }}
+    </p>
   </p-dialog>
 </div>

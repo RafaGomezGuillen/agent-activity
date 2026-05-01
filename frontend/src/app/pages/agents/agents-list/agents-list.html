@@ -66,6 +66,7 @@
     <a
       *ngFor="let agent of agents"
       [routerLink]="['/agents', agent.id]"
+      pTooltip="View details for {{ agent.hostname }}"
       class="block rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] p-4 hover:border-cyan-500/40 hover:bg-cyan-500/5 transition-all cursor-pointer no-underline group"
     >
       <div class="flex items-start justify-between mb-3">
@@ -106,6 +107,7 @@
   <!-- Pagination -->
   <div *ngIf="!loading && total > size" class="mt-6 flex justify-center">
     <p-paginator
+      [first]="(page - 1) * size"
       [rows]="size"
       [totalRecords]="total"
       [rowsPerPageOptions]="[12, 24, 48]"
