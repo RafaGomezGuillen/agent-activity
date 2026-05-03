@@ -1,7 +1,9 @@
 import os
 import shutil
+import zipfile
+from io import BytesIO
 from fastapi import APIRouter, Depends, UploadFile, File, HTTPException, Query, Path
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, StreamingResponse
 from sqlalchemy.orm import Session
 from datetime import datetime
 from typing import Optional
@@ -140,7 +142,7 @@ def get_screenshot_file(
     if not screenshot:
         raise HTTPException(status_code=404, detail="Not found")
 
-    return FileResponse(screenshot.filepath)
+    return FileResponse(str(screenshot.filepath))
 
 @router.delete("/{screenshot_id}")
 def delete_screenshot(
@@ -158,10 +160,41 @@ def delete_screenshot(
         raise HTTPException(status_code=404, detail="Not found")
 
     # Delete the file from disk
-    if os.path.exists(screenshot.filepath):
-        os.remove(screenshot.filepath)
+    if os.path.exists(str(screenshot.filepath)):
+        os.remove(str(screenshot.filepath))
 
     db.delete(screenshot)
     db.commit()
 
     return {"status": "deleted"}
+
+@router.get("/download/agent/{agent_id}")
+def download_screenshots(
+    agent_id: str = Path(..., description="ID of the agent to download screenshots for"),
+    db: Session = Depends(get_db)
+):
+    """
+    Download all screenshots for a specific agent as a ZIP file.
+    """
+    screenshots = db.query(Screenshot).filter(
+        Screenshot.agent_id == agent_id
+    ).all()
+
+    if not screenshots:
+        raise HTTPException(status_code=404, detail="No screenshots found for this agent")
+
+    zip_buffer = BytesIO()
+
+    with zipfile.ZipFile(zip_buffer, "w") as zip_file:
+        for screenshot in screenshots:
+            zip_file.write(str(screenshot.filepath), arcname=str(screenshot.filename))
+
+    zip_buffer.seek(0)
+
+    return StreamingResponse(
+        zip_buffer,
+        media_type="application/zip",
+        headers={
+            "Content-Disposition": f'attachment; filename="{agent_id}_screenshots.zip"'
+        },
+    )
