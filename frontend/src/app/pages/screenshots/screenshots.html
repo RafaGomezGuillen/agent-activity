@@ -67,7 +67,7 @@
 
   <div
     *ngIf="!loading"
-    class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
   >
     <div
       *ngFor="let s of screenshots"
@@ -132,12 +132,18 @@
       [alt]="selectedScreenshot.filename"
       class="w-full rounded"
     />
-    <p
-      *ngIf="selectedScreenshot"
-      class="text-[var(--text-muted)] text-xs font-mono mt-2 text-center"
-    >
-      {{ getAgentHostname(selectedScreenshot.agent_id) }} — {{
-      selectedScreenshot.created_at | date:'medium' }}
-    </p>
+    <div *ngIf="selectedScreenshot" class="flex items-center flex-col gap-2 mt-2">
+      <p
+        class="text-xs text-center lg:hidden"
+      >
+        {{ selectedScreenshot.filename || '' }}
+      </p>
+      <p
+        class="text-[var(--text-muted)] text-xs text-center"
+      >
+        {{ getAgentHostname(selectedScreenshot.agent_id) }} — {{
+        selectedScreenshot.created_at | date:'medium' }}
+      </p>
+    </div>
   </p-dialog>
 </div>
