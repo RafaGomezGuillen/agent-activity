@@ -9,8 +9,8 @@
 
   <!-- Filters -->
   <div class="rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] p-4 mb-6">
-    <div class="flex flex-col md:flex-row gap-3 items-end">
-      <div class="flex-1">
+    <div class="flex flex-col lg:flex-row gap-3 items-end">
+      <div class="flex-1 w-full lg:min-w-44">
         <label class="block text-[var(--text-muted)] text-xs font-mono mb-1.5">SEARCH</label>
         <p-iconfield class="w-full">
           <p-inputicon styleClass="pi pi-search" />
@@ -23,7 +23,7 @@
           />
         </p-iconfield>
       </div>
-      <div class="w-full md:w-44">
+      <div class="w-full lg:w-44">
         <label class="block text-[var(--text-muted)] text-xs font-mono mb-1.5">OS</label>
         <p-select
           [(ngModel)]="osFilter"
@@ -34,7 +34,7 @@
           (onChange)="applyFilters()"
         ></p-select>
       </div>
-      <div class="w-full md:w-44">
+      <div class="w-full lg:w-44">
         <label class="block text-[var(--text-muted)] text-xs font-mono mb-1.5">STATUS</label>
         <p-select
           [(ngModel)]="statusFilter"
@@ -45,7 +45,7 @@
           (onChange)="applyFilters()"
         ></p-select>
       </div>
-      <div class="flex gap-2">
+      <div class="flex flex-1 gap-2 justify-end h-10">
         <button pButton label="Apply" icon="pi pi-filter" class="p-button-sm p-button-outlined" (click)="applyFilters()"></button>
         <button pButton label="Clear" icon="pi pi-times" class="p-button-sm p-button-text" (click)="clearFilters()"></button>
       </div>

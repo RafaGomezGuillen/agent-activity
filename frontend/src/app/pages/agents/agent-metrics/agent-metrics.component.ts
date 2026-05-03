@@ -112,13 +112,6 @@ export class AgentMetricsComponent implements OnInit {
     this.networkChartOptions = baseOptions;
   }
 
-  toggleMetric(type: 'cpu' | 'memory' | 'disk'): void {
-    if (type === 'cpu') this.showCpu = !this.showCpu;
-    if (type === 'memory') this.showMemory = !this.showMemory;
-    if (type === 'disk') this.showDisk = !this.showDisk;
-    this.buildCharts();
-  }
-
   applyFilters(): void {
     this.offset = 0;
     this.load();
