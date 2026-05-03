@@ -25,8 +25,10 @@ export class AgentCommandsComponent implements OnInit {
   agentId = '';
   agent: Agent | null = null;
   commands: Command[] = [];
+  totalRecords = 0;
+  rows = 10;
+  first = 0;
   loading = true;
-  creating = false;
 
   // New command form
   availableCommands = AVAILABLE_COMMANDS;
@@ -37,6 +39,7 @@ export class AgentCommandsComponent implements OnInit {
   selectedCommand: Command | null = null;
   treeNodes: TreeNode[] = [];
   fileContent: string | null = null;
+  fileContentModalVisible = false;
   processEntries: ProcessEntry[] = [];
   resultError: string | null = null;
 
@@ -55,10 +58,22 @@ export class AgentCommandsComponent implements OnInit {
 
   load(): void {
     this.loading = true;
-    this.commandService.getCommandsByAgent(this.agentId).subscribe({
-      next: (cmds) => { this.commands = cmds; this.loading = false; this.cdr.detectChanges(); },
+    this.commandService.getCommandsByAgent(this.agentId, this.rows, this.first).subscribe({
+      next: (response) => {
+        this.commands = response.items || [];
+        this.totalRecords = response.total || 0;
+        this.first = response.offset || 0;
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
       error: () => { this.loading = false; this.cdr.detectChanges(); },
     });
+  }
+
+  onPageChange(event: { first?: number; rows?: number }): void {
+    this.first = event.first ?? 0;
+    this.rows = event.rows ?? this.rows;
+    this.load();
   }
 
   onCommandTypeChange(): void {
@@ -68,7 +83,15 @@ export class AgentCommandsComponent implements OnInit {
     }
   }
 
+  get isAgentOnline(): boolean {
+    return Boolean(this.agent?.status);
+  }
+
   createCommand(): void {
+    if (!this.isAgentOnline) {
+      return;
+    }
+
     let params: Record<string, any> = {};
     try {
       params = JSON.parse(this.paramsJson);
@@ -76,27 +99,56 @@ export class AgentCommandsComponent implements OnInit {
       return;
     }
 
+    this.executeCommand(this.selectedCommandType, params);
+  }
+
+  executeCommand(command: CommandType, params: Record<string, any>): void {
+    if (!this.isAgentOnline) {
+      return;
+    }
+
     const payload: CommandCreate = {
       agent_id: this.agentId,
-      command: this.selectedCommandType,
+      command,
       params,
     };
 
-    this.creating = true;
     this.commandService.createCommand(payload).subscribe({
       next: (cmd) => {
-        this.commands = [cmd, ...this.commands];
-        this.creating = false;
-        this.cdr.detectChanges();
+        this.first = 0;
+        this.selectCommand(cmd);
+        this.load();
       },
-      error: () => { this.creating = false; this.cdr.detectChanges(); },
+      error: () => { this.cdr.detectChanges(); },
     });
+  }
+
+  onTreeNodeSelect(event: { node?: TreeNode }): void {
+    const entry = event?.node?.data as DirectoryEntry | undefined;
+    if (!entry || !this.isAgentOnline) {
+      return;
+    }
+
+    if (entry.is_dir) {
+      this.executeCommand('filesystem.list_directory', { path: entry.path });
+      return;
+    }
+
+    this.executeCommand('filesystem.read_file', { path: entry.path });
+  }
+
+  openFileContentModal(): void {
+    if (this.fileContent === null) {
+      return;
+    }
+    this.fileContentModalVisible = true;
   }
 
   selectCommand(cmd: Command): void {
     this.selectedCommand = cmd;
     this.treeNodes = [];
     this.fileContent = null;
+    this.fileContentModalVisible = false;
     this.processEntries = [];
     this.resultError = null;
 

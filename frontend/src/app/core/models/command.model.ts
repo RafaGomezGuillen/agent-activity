@@ -22,6 +22,13 @@ export interface CommandCreate {
   params?: Record<string, any>;
 }
 
+export interface CommandListResponse {
+  total: number;
+  limit: number;
+  offset: number;
+  items: Command[];
+}
+
 export interface DirectoryEntry {
   name: string;
   path: string;

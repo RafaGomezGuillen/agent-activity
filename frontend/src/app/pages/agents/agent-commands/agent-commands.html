@@ -13,7 +13,15 @@
     <!-- Left: Create Command + Command List -->
     <div class="space-y-4">
       <!-- Create Command -->
+      <p
+        *ngIf="!isAgentOnline"
+        class="rounded border border-red-500/20 bg-red-500/5 p-3 text-xs font-mono text-red-400"
+      >
+        Agent offline: command execution is disabled.
+      </p>
+      
       <div
+        *ngIf="isAgentOnline"
         class="rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] p-5"
       >
         <h3
@@ -57,7 +65,6 @@
             label="Execute"
             icon="pi pi-send"
             class="w-full"
-            [loading]="creating"
             pTooltip="Execute the command on the agent"
             (click)="createCommand()"
           ></button>
@@ -74,7 +81,7 @@
           <h3
             class="text-[var(--text-primary)] font-mono text-xs uppercase tracking-wider"
           >
-            Command History
+            Command History - {{ totalRecords }} total
           </h3>
           <button
             pButton
@@ -124,6 +131,19 @@
           >
             No commands yet.
           </div>
+        </div>
+
+        <div
+          *ngIf="!loading && totalRecords > 0"
+          class="border-t border-[var(--border-color)]"
+        >
+          <p-paginator
+            [first]="first"
+            [rows]="rows"
+            [totalRecords]="totalRecords"
+            [rowsPerPageOptions]="[5, 10, 20, 50]"
+            (onPageChange)="onPageChange($event)"
+          ></p-paginator>
         </div>
       </div>
     </div>
@@ -177,8 +197,12 @@
       <div *ngIf="selectedCommand && treeNodes.length > 0">
         <p-tree
           [value]="treeNodes"
-          styleClass="w-full"
+          selectionMode="single"
+          [styleClass]="isAgentOnline ? 'w-full' : 'w-full opacity-60 pointer-events-none'"
           [style]="{'background': 'transparent', 'border': 'none', 'padding': '0'}"
+          pTooltip="Click a folder to list it or a file to read it"
+          tooltipPosition="top"
+          (onNodeSelect)="onTreeNodeSelect($event)"
         >
           <ng-template pTemplate="default" let-node>
             <span
@@ -199,12 +223,43 @@
 
       <!-- File Content -->
       <div *ngIf="selectedCommand && fileContent !== null" class="h-full">
+        <div class="mb-2 flex justify-end">
+          <button
+            pButton
+            type="button"
+            label="Open Fullscreen"
+            icon="pi pi-window-maximize"
+            class="p-button-sm p-button-text"
+            (click)="openFileContentModal()"
+          ></button>
+        </div>
         <pre
           class="rounded bg-[var(--bg-primary)] border border-[var(--border-color)] p-4 text-xs font-mono text-[var(--text-secondary)] overflow-auto max-h-[500px] whitespace-pre-wrap break-words"
         >
 {{ fileContent }}</pre
         >
       </div>
+
+      <p-dialog
+        header="File Content"
+        [(visible)]="fileContentModalVisible"
+        [modal]="true"
+        [draggable]="false"
+        [resizable]="false"
+        [dismissableMask]="true"
+        [closable]="true"
+        [style]="{ width: '100vw', height: '100vh', maxHeight: '100vh', margin: '0' }"
+        [contentStyle]="{ height: 'calc(100vh - 7rem)', overflow: 'auto' }"
+      >
+      <div class="border-[var(--border-color)] border rounded p-4 bg-[var(--bg-primary)] ">
+         <pre
+          class="h-full text-xs font-mono text-[var(--text-secondary)] whitespace-pre-wrap break-words"
+        >
+{{ fileContent }}</pre
+        >
+      </div>
+       
+      </p-dialog>
 
       <!-- Process List -->
       <div *ngIf="selectedCommand && processEntries.length > 0">
@@ -218,25 +273,29 @@
             <tr class="text-[var(--text-muted)] text-xs font-mono uppercase">
               <th>PID</th>
               <th>Name</th>
-              <th>Status</th>
+              <th>User</th>
               <th>CPU%</th>
               <th>Mem%</th>
+              <th>Started at</th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-p>
-            <tr class="hover:bg-[var(--bg-secondary)]">
+            <tr>
               <td class="font-mono text-xs">{{ p.pid }}</td>
               <td class="font-mono text-sm text-[var(--text-primary)]">
                 {{ p.name }}
               </td>
               <td class="font-mono text-xs text-[var(--text-muted)]">
-                {{ p.status }}
+                {{ p.user }}
               </td>
               <td class="font-mono text-xs">
-                {{ p.cpu_percent?.toFixed(1) || '—' }}
+                {{ p.cpu || '—' }}
               </td>
               <td class="font-mono text-xs">
-                {{ p.memory_percent?.toFixed(1) || '—' }}
+                {{ p.memory || '—' }}
+              </td>
+              <td class="font-mono text-xs">
+                {{ p.started_at ? (p.started_at | date:'short') : '—' }}
               </td>
             </tr>
           </ng-template>
