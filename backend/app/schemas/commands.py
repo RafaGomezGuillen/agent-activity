@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
 
 class CommandBase(BaseModel):
     command: str
@@ -24,3 +24,10 @@ class CommandUpdate(BaseModel):
     status: str
     result: Optional[Dict[str, Any]] = None
     executed_at: Optional[datetime] = None
+
+
+class CommandPagination(BaseModel):
+    total: int
+    limit: int
+    offset: int
+    items: List[CommandOut]

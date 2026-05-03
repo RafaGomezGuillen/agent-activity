@@ -6,7 +6,7 @@ from typing import Optional, List
 
 from app.db.database import get_db
 from app.models import Command, Agent
-from app.schemas.commands import CommandCreate, CommandOut, CommandUpdate
+from app.schemas.commands import CommandCreate, CommandOut, CommandUpdate, CommandPagination
 
 router = APIRouter(prefix="/commands", tags=["Commands"])
 
@@ -28,6 +28,9 @@ def create_command(data: CommandCreate, db: Session = Depends(get_db)):
     
     if not agent_exists:
         raise HTTPException(status_code=404, detail="Agent not found")
+    
+    if agent_exists.status == False:
+        raise HTTPException(status_code=400, detail="Agent is not active")
     
     if new_command.command not in Command.AVAILABLE_COMMANDS:
         raise HTTPException(status_code=400, detail="Invalid command type")
@@ -82,12 +85,12 @@ def update_command(
 
     return command
 
-@router.get("/", response_model=List[CommandOut])
+@router.get("/", response_model=CommandPagination)
 def list_commands(
     agent_id: Optional[str] = Query(None, description="Filter by agent ID"),
     status_filter: Optional[str] = Query(None, alias="status", description="Filter by status (eg: pending, executed, failed)"),
-    page: int = Query(1, ge=1),
-    size: int = Query(10, ge=1, le=100),
+    limit: int = Query(100, ge=1, le=1000, description="Limit must be between 1 and 1000"),
+    offset: int = Query(0, ge=0, description="Offset must be non-negative"),
     db: Session = Depends(get_db)
 ):
     """
@@ -101,9 +104,21 @@ def list_commands(
     if status_filter:
         query = query.filter(Command.status == status_filter)
 
-    commands = query.order_by(Command.created_at.desc()).offset((page - 1) * size).limit(size).all()
+    total = query.count()
 
-    return commands
+    results = (
+        query.order_by(Command.created_at.desc())
+        .offset(offset)
+        .limit(limit)
+        .all()
+    )
+
+    return {
+        "total": total,
+        "limit": limit,
+        "offset": offset,
+        "items": results
+    }
 
 @router.delete("/{command_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_command(
