@@ -44,8 +44,8 @@ export class KeylogsComponent implements OnInit {
         { label: 'All Agents', value: '' },
         ...r.items.map((a) => ({ label: a.hostname, value: a.id })),
       ];
+      this.load();
     });
-    this.load();
   }
 
   load(): void {
