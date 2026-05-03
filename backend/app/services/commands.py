@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
 
 from app.db.database import SessionLocal
-from app.models import Agent
+from app.models import Command
 
 logger = logging.getLogger("commands_job")
 
@@ -20,9 +20,9 @@ def check_pending_commands():
         threshold = datetime.utcnow() - timedelta(minutes=minutes)
 
         updated = (
-            db.query(Agent)
-            .filter(Agent.created_at < threshold, Agent.status == "pending")
-            .update({Agent.status: "failed"}, synchronize_session=False)
+            db.query(Command)
+            .filter(Command.created_at < threshold, Command.status == "pending")
+            .update({Command.status: "failed"}, synchronize_session=False)
         )
 
         db.commit()
