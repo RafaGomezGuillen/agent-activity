@@ -113,7 +113,8 @@
             <a
               [routerLink]="['/agents', agent.id]"
               pTooltip="View details for {{ agent.hostname }}"
-              class="text-cyan-400 hover:underline font-mono text-xs">
+              class="text-cyan-400 hover:underline font-mono text-xs"
+            >
               <button
                 pButton
                 icon="pi pi-arrow-right"
@@ -127,6 +128,7 @@
         <tr>
           <td
             colspan="6"
+            style="text-align: center !important"
             class="text-center text-[var(--text-muted)] font-mono text-sm py-8"
           >
             No agents registered.
