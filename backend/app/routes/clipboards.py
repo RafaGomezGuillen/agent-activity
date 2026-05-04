@@ -1,6 +1,6 @@
 from datetime import datetime
 import json
-from fastapi import APIRouter, Depends, Query, Path, Body
+from fastapi import APIRouter, Depends, HTTPException, Query, Path, Body
 from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 
@@ -91,7 +91,7 @@ def get_clipboards(
         "data": results
     }
 
-@router.get("/download")
+@router.get("/download/{agent_id}")
 def download_clipboards(
     agent_id: str = Path(..., description="ID of the agent to download clipboards for"),
     db: Session = Depends(get_db)
@@ -104,6 +104,9 @@ def download_clipboards(
         .filter(Clipboard.agent_id == agent_id)
         .order_by(Clipboard.timestamp.asc())
     )
+
+    if not query.first():
+        raise HTTPException(status_code=404, detail="No clipboard data found for this agent")
 
     def generate():
         for log in query:
