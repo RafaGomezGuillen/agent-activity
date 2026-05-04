@@ -25,4 +25,11 @@ export class ClipboardService {
 
     return this.http.get<ClipboardResponse>(`${this.base}/`, { params });
   }
+
+  downloadClipboards(agentId: string) {
+    return this.http.get(`${this.base}/download/${encodeURIComponent(agentId)}`, {
+      observe: "response",
+      responseType: "blob",
+    });
+  }
 }

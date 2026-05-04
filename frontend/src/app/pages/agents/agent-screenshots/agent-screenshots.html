@@ -30,6 +30,7 @@
       <div class="flex gap-2 justify-end h-10">
         <button
           pButton
+          pTooltip="Apply filters to narrow down the screenshot list"
           label="Apply"
           icon="pi pi-filter"
           class="p-button-sm p-button-outlined"
@@ -37,6 +38,7 @@
         ></button>
         <button
           pButton
+          pTooltip="Clear all filters and show all screenshots for this agent"
           label="Clear"
           icon="pi pi-times"
           class="p-button-sm p-button-text"
@@ -44,6 +46,23 @@
         ></button>
       </div>
     </div>
+  </div>
+
+  <div class="mb-4 flex items-center justify-between gap-3">
+    <span class="text-[var(--text-muted)] text-xs font-mono"
+      >{{ total }} records</span
+    >
+    <button
+      pButton
+      tooltipPosition="left"
+      pTooltip="Download all screenshots for this agent as a ZIP file"
+      label="Download"
+      icon="pi pi-download"
+      class="p-button-sm p-button-outlined"
+      [loading]="downloading"
+      [disabled]="downloading"
+      (click)="download()"
+    ></button>
   </div>
 
   <!-- Gallery -->

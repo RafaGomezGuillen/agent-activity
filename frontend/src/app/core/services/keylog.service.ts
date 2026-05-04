@@ -26,4 +26,11 @@ export class KeylogService {
 
     return this.http.get<KeylogResponse>(`${this.base}/`, { params });
   }
+
+  downloadKeylogs(agentId: string) {
+    return this.http.get(`${this.base}/download/${encodeURIComponent(agentId)}`, {
+      observe: "response",
+      responseType: "blob",
+    });
+  }
 }

@@ -1,5 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { HttpResponse } from '@angular/common/http';
+import { finalize } from 'rxjs';
 import { ScreenshotService } from '../../../core/services/screenshot.service';
 import { AgentService } from '../../../core/services/agent.service';
 import { Screenshot, ScreenshotFilters } from '../../../core/models/screenshot.model';
@@ -17,6 +19,7 @@ export class AgentScreenshotsComponent implements OnInit {
   screenshots: Screenshot[] = [];
   total = 0;
   loading = true;
+  downloading = false;
 
   limit = 24;
   offset = 0;
@@ -77,5 +80,52 @@ export class AgentScreenshotsComponent implements OnInit {
   clearFilters(): void {
     this.dateRange = null;
     this.applyFilters();
+  }
+
+  download(): void {
+    if (!this.agentId || this.downloading) return;
+
+    this.downloading = true;
+    this.screenshotService
+      .downloadScreenshots(this.agentId)
+      .pipe(
+        finalize(() => {
+          this.downloading = false;
+          this.cdr.detectChanges();
+        })
+      )
+      .subscribe({
+        next: (response) => {
+          this.saveBlobResponse(response, `${this.agentId}_screenshots.zip`);
+        },
+        error: () => {
+          console.error('Failed to download screenshots');
+        },
+      });
+  }
+
+  private saveBlobResponse(response: HttpResponse<Blob>, fallbackFileName: string): void {
+    if (!response.body) return;
+
+    const contentDisposition = response.headers.get('content-disposition');
+    const fileName = this.extractFileName(contentDisposition) ?? fallbackFileName;
+    const objectUrl = URL.createObjectURL(response.body);
+    const link = document.createElement('a');
+    link.href = objectUrl;
+    link.download = fileName;
+    link.click();
+    URL.revokeObjectURL(objectUrl);
+  }
+
+  private extractFileName(contentDisposition: string | null): string | null {
+    if (!contentDisposition) return null;
+
+    const utf8Match = contentDisposition.match(/filename\*=UTF-8''([^;]+)/i);
+    if (utf8Match?.[1]) {
+      return decodeURIComponent(utf8Match[1]);
+    }
+
+    const plainMatch = contentDisposition.match(/filename="?([^";]+)"?/i);
+    return plainMatch?.[1] ?? null;
   }
 }

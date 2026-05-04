@@ -55,12 +55,14 @@
         <button
           pButton
           label="Apply"
+          pTooltip="Apply filters to narrow down the keylog list"
           icon="pi pi-filter"
           class="p-button-sm p-button-outlined"
           (click)="applyFilters()"
         ></button>
         <button
           pButton
+          pTooltip="Clear all filters and show all keylogs for this agent"
           label="Clear"
           icon="pi pi-times"
           class="p-button-sm p-button-text"
@@ -74,10 +76,23 @@
   <div
     class="rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] overflow-hidden"
   >
-    <div class="px-5 py-4 border-b border-[var(--border-color)]">
+    <div
+      class="px-5 py-4 border-b border-[var(--border-color)] flex items-center justify-between gap-3"
+    >
       <span class="text-[var(--text-muted)] text-xs font-mono"
         >{{ total }} records</span
       >
+      <button
+        pButton
+        tooltipPosition="left"
+        pTooltip="Download all keylogs for this agent as a ZIP file"
+        label="Download"
+        icon="pi pi-download"
+        class="p-button-sm p-button-outlined"
+        [loading]="downloading"
+        [disabled]="downloading"
+        (click)="download()"
+      ></button>
     </div>
 
     <div *ngIf="loading" class="p-5 space-y-3">
