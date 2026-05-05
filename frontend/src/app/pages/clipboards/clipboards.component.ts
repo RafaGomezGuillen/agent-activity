@@ -23,6 +23,8 @@ export class ClipboardsComponent implements OnInit {
   dateRange: Date[] | null = null;
 
   agentOptions: { label: string; value: string }[] = [];
+  selectedClipboard: Clipboard | null = null;
+  dialogVisible = false;
 
   constructor(
     private clipboardService: ClipboardService,
@@ -74,6 +76,16 @@ export class ClipboardsComponent implements OnInit {
     this.agentFilter = '';
     this.dateRange = null;
     this.applyFilters();
+  }
+
+  openDialog(c: Clipboard): void {
+    this.selectedClipboard = c;
+    this.dialogVisible = true;
+  }
+
+  closeDialog(): void {
+    this.selectedClipboard = null;
+    this.dialogVisible = false;
   }
 
   getAgentHostname(agentId: string): string {

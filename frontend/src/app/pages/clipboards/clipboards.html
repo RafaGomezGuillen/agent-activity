@@ -112,8 +112,10 @@
             >
           </td>
           <td
-            class="font-mono text-sm text-[var(--text-primary)] max-w-0 truncate"
+            class="font-mono text-sm text-[var(--text-primary)] max-w-0 truncate cursor-pointer"
             style="max-width: 400px"
+            pTooltip="Full clipboard content"
+            (click)="openDialog(item)"
             [title]="item.value"
           >
             {{ item.value || '—' }}
@@ -147,3 +149,25 @@
     </div>
   </div>
 </div>
+
+<!-- Dialog -->
+<p-dialog
+  header="Clipboard Content"
+  [(visible)]="dialogVisible"
+  [modal]="true"
+  [closable]="true"
+  [resizable]="false"
+  [draggable]="false"
+  [style]="{width: '90vw', maxWidth: '600px'}"
+  (onHide)="closeDialog()"
+>
+  <div
+    class="border-[var(--border-color)] border rounded p-4 bg-[var(--bg-primary)]"
+  >
+    <pre
+      class="h-full text-xs font-mono text-[var(--text-secondary)] whitespace-pre-wrap break-words"
+    >
+{{ selectedClipboard?.value }}</pre
+    >
+  </div>
+</p-dialog>

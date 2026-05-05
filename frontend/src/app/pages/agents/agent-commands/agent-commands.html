@@ -19,7 +19,7 @@
       >
         Agent offline: command execution is disabled.
       </p>
-      
+
       <div
         *ngIf="isAgentOnline"
         class="rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] p-5"
@@ -251,14 +251,15 @@
         [style]="{ width: '100vw', height: '100vh', maxHeight: '100vh', margin: '0' }"
         [contentStyle]="{ height: 'calc(100vh - 7rem)', overflow: 'auto' }"
       >
-      <div class="border-[var(--border-color)] border rounded p-4 bg-[var(--bg-primary)] ">
-         <pre
-          class="h-full text-xs font-mono text-[var(--text-secondary)] whitespace-pre-wrap break-words"
+        <div
+          class="border-[var(--border-color)] border rounded p-4 bg-[var(--bg-primary)]"
         >
+          <pre
+            class="h-full text-xs font-mono text-[var(--text-secondary)] whitespace-pre-wrap break-words"
+          >
 {{ fileContent }}</pre
-        >
-      </div>
-       
+          >
+        </div>
       </p-dialog>
 
       <!-- Process List -->
@@ -288,12 +289,8 @@
               <td class="font-mono text-xs text-[var(--text-muted)]">
                 {{ p.user }}
               </td>
-              <td class="font-mono text-xs">
-                {{ p.cpu || '—' }}
-              </td>
-              <td class="font-mono text-xs">
-                {{ p.memory || '—' }}
-              </td>
+              <td class="font-mono text-xs">{{ p.cpu || '—' }}</td>
+              <td class="font-mono text-xs">{{ p.memory || '—' }}</td>
               <td class="font-mono text-xs">
                 {{ p.started_at ? (p.started_at | date:'short') : '—' }}
               </td>
