@@ -43,7 +43,7 @@
   <ng-container *ngIf="!loading">
     <!-- CPU / Memory / Disk Chart -->
     <div class="rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] p-5 mb-6">
-      <h3 class="text-cyan-400 font-mono text-xs uppercase tracking-wider mb-4 flex items-center gap-2">
+      <h3 class="text-[var(--link-default)] font-mono text-xs uppercase tracking-wider mb-4 flex items-center gap-2">
         <i class="pi pi-chart-line"></i> System Resources ({{ total }} samples)
       </h3>
       <div *ngIf="metrics.length === 0" class="h-48 flex items-center justify-center">
@@ -56,7 +56,7 @@
 
     <!-- Network Chart -->
     <div class="rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] p-5">
-      <h3 class="text-cyan-400 font-mono text-xs uppercase tracking-wider mb-4 flex items-center gap-2">
+      <h3 class="text-[var(--link-default)] font-mono text-xs uppercase tracking-wider mb-4 flex items-center gap-2">
         <i class="pi pi-arrows-h"></i> Network Speed
       </h3>
       <div *ngIf="metrics.length > 0" style="height: 200px;">

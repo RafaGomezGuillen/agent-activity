@@ -19,7 +19,7 @@ import { TreeNode } from 'primeng/api';
   selector: 'app-agent-commands',
   templateUrl: './agent-commands.html',
   standalone: false,
-  styles: [],
+  styleUrls: ['./agent-commands.css'],
 })
 export class AgentCommandsComponent implements OnInit {
   agentId = '';
@@ -182,10 +182,10 @@ export class AgentCommandsComponent implements OnInit {
 
   statusClass(status: string): string {
     const map: Record<string, string> = {
-      pending: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
-      executed: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
-      failed: 'bg-red-500/10 text-red-400 border-red-500/20',
+      pending: 'bg-[var(--warning-main)]/20 text-[var(--warning-text)] border-[var(--warning-main)]',
+      executed: 'bg-[var(--success-main)]/20 text-[var(--success-text)] border-[var(--success-main)]',
+      failed: 'bg-[var(--error-main)]/20 text-[var(--error-text)] border-[var(--error-main)]',
     };
-    return map[status] || 'bg-gray-500/10 text-gray-400 border-gray-500/20';
+    return map[status] || 'bg-gray-500/10 text-gray-400 border-gray-500';
   }
 }

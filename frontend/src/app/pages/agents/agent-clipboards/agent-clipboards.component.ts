@@ -25,6 +25,8 @@ export class AgentClipboardsComponent implements OnInit {
   offset = 0;
   appFilter = '';
   dateRange: Date[] | null = null;
+  selectedClipboard: Clipboard | null = null;
+  dialogVisible = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -71,6 +73,16 @@ export class AgentClipboardsComponent implements OnInit {
     this.appFilter = '';
     this.dateRange = null;
     this.applyFilters();
+  }
+
+  openDialog(c: Clipboard): void {
+    this.selectedClipboard = c;
+    this.dialogVisible = true;
+  }
+
+  closeDialog(): void {
+    this.selectedClipboard = null;
+    this.dialogVisible = false;
   }
 
   download(): void {

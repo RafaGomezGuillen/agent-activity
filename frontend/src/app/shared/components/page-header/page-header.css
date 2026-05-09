@@ -1,0 +1,8 @@
+#page-header {
+  a {
+    &:hover {
+      color: var(--link-hover) !important;
+      text-decoration: underline !important;
+    }
+  }
+}

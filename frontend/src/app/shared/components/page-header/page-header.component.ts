@@ -4,7 +4,7 @@ import { Component, Input } from "@angular/core";
   selector: "app-page-header",
   templateUrl: "./page-header.html",
   standalone: false,
-  styles: [],
+  styleUrls: ["./page-header.css"],
 })
 export class PageHeaderComponent {
   @Input() title = "";

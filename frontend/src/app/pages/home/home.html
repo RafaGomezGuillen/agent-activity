@@ -31,22 +31,22 @@
 
   <!-- Terminal banner -->
   <div
-    class="rounded-lg border border-cyan-500/20 bg-cyan-500/5 p-5 mb-8 font-mono text-sm"
+    class="rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] p-5 mb-8 font-mono text-sm"
   >
-    <div class="text-cyan-400 mb-2">root&#64;agent-activity:~#</div>
-    <div class="text-[var(--text-secondary)] leading-relaxed">
-      <span class="text-emerald-400">{{ totalAgents }}</span> agents registered
-      &mdash; <span class="text-emerald-400">{{ onlineAgents }}</span> active
+    <div class="text-[var(--link-default)] mb-2">root&#64;agent-activity:~#</div>
+    <div class="text-[var(--text-muted)] leading-relaxed">
+      <span class="text-[var(--success-text)]">{{ totalAgents }}</span> agents registered
+      &mdash; <span class="text-[var(--success-text)]">{{ onlineAgents }}</span> active
       <span *ngIf="offlineAgents > 0">
         &mdash;
-        <span class="text-red-400">{{ offlineAgents }}</span> unreachable</span
+        <span class="text-[var(--error-text)]">{{ offlineAgents }}</span> unreachable</span
       >
     </div>
     <div class="text-[var(--text-muted)] mt-2 text-xs">
       Navigate to
       <a
+        class="link"
         routerLink="/agents"
-        class="text-cyan-400 hover:underline"
         pTooltip="View all agents"
         >/agents</a
       >
@@ -62,14 +62,14 @@
       class="flex items-center justify-between px-5 py-4 border-b border-[var(--border-color)]"
     >
       <h2
-        class="text-[var(--text-primary)] font-mono font-semibold text-sm tracking-wider"
+        class="text-[var(--text-main)] font-mono font-semibold text-sm tracking-wider"
       >
         RECENT AGENTS
       </h2>
       <a
         routerLink="/agents"
         pTooltip="View all agents"
-        class="text-cyan-400 text-xs font-mono hover:underline"
+        class="text-xs font-mono link"
         >VIEW ALL →</a
       >
     </div>
@@ -85,7 +85,7 @@
       styleClass="p-datatable-sm"
     >
       <ng-template pTemplate="header">
-        <tr class="text-[var(--text-muted)] text-xs font-mono uppercase">
+        <tr class="uppercase">
           <th>Status</th>
           <th>Hostname</th>
           <th>IP Address</th>
@@ -95,30 +95,30 @@
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-agent>
-        <tr class="hover:bg-[var(--bg-secondary)] transition-colors">
+        <tr>
           <td><app-status-badge [online]="agent.status"></app-status-badge></td>
-          <td class="font-mono text-[var(--text-primary)] text-sm">
+          <td>
             {{ agent.hostname }}
           </td>
-          <td class="font-mono text-[var(--text-secondary)] text-sm">
+          <td>
             {{ agent.ip_address }}
           </td>
-          <td class="font-mono text-[var(--text-secondary)] text-sm">
+          <td>
             {{ agent.os }}
           </td>
-          <td class="font-mono text-[var(--text-muted)] text-xs">
+          <td>
             {{ agent.last_seen | date:'short' }}
           </td>
           <td>
             <a
               [routerLink]="['/agents', agent.id]"
               pTooltip="View details for {{ agent.hostname }}"
-              class="text-cyan-400 hover:underline font-mono text-xs"
+              class="link"
             >
               <button
                 pButton
                 icon="pi pi-arrow-right"
-                class="p-button-text p-button-sm p-button-rounded"
+                class="link p-button-text p-button-sm p-button-rounded"
               ></button>
             </a>
           </td>
@@ -129,7 +129,7 @@
           <td
             colspan="6"
             style="text-align: center !important"
-            class="text-center text-[var(--text-muted)] font-mono text-sm py-8"
+            class="text-center text-[var(--text-main)] font-mono text-sm py-8"
           >
             No agents registered.
           </td>

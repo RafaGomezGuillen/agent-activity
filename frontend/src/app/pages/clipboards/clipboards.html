@@ -92,27 +92,27 @@
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-item>
-        <tr class="hover:bg-[var(--bg-secondary)] transition-colors">
-          <td class="font-mono text-xs text-[var(--text-muted)]">
+        <tr>
+          <td>
             {{ item.timestamp | date:'medium' }}
           </td>
           <td>
             <a
               [routerLink]="['/agents', item.agent_id]"
               pTooltip="View details for {{ getAgentHostname(item.agent_id) }}"
-              class="text-cyan-400 hover:underline font-mono text-xs"
+              class="link"
             >
               {{ getAgentHostname(item.agent_id) }}
             </a>
           </td>
           <td>
             <span
-              class="px-2 py-0.5 rounded text-xs font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20"
+              class="text-xs span-accent"
               >{{ item.app || '—' }}</span
             >
           </td>
           <td
-            class="font-mono text-sm text-[var(--text-primary)] max-w-0 truncate cursor-pointer"
+            class="font-mono text-sm text-[var(--text-main)] max-w-0 truncate cursor-pointer"
             style="max-width: 400px"
             pTooltip="Full clipboard content"
             (click)="openDialog(item)"
@@ -165,7 +165,7 @@
     class="border-[var(--border-color)] border rounded p-4 bg-[var(--bg-primary)]"
   >
     <pre
-      class="h-full text-xs font-mono text-[var(--text-secondary)] whitespace-pre-wrap break-words"
+      class="h-full text-xs font-mono text-[var(--text-main)] whitespace-pre-wrap break-words"
     >
 {{ selectedClipboard?.value }}</pre
     >

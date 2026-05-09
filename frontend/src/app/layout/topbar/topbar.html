@@ -1,5 +1,6 @@
 <header
-  class="flex items-center justify-between px-5 py-5 h-16 border-b border-[var(--border-color)] bg-[var(--bg-secondary)] shrink-0"
+  id="topbar-container"
+  class="flex items-center justify-between px-5 py-5 h-16 border-b border-[var(--border-color)] bg-[var(--bg-primary)] shrink-0"
 >
   <div class="flex items-center gap-2">
     <div class="lg:hidden">
@@ -11,13 +12,15 @@
         (click)="toggleSidebar.emit()"
       ></button>
     </div>
-    <span class="text-[var(--text-muted)] text-xs font-mono">SYS://</span>
-    <span class="text-cyan-400 text-xs font-mono">ACTIVE</span>
-    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+    <span class="text-[var(--text-main)] text-xs font-mono">SYS://</span>
+    <span class="text-[var(--link-default)] text-xs font-mono">ACTIVE</span>
+    <span class="w-2 h-2 rounded-full bg-[var(--success-text)] animate-pulse"></span>
   </div>
 
   <div class="flex items-center gap-3">
-    <span class="text-[var(--text-muted)] text-xs font-mono hidden md:block">
+    <span
+      class="text-[var(--text-main)] text-xs font-mono hidden md:block"
+    >
       {{ themeService.isDark ? 'DARK_MODE' : 'LIGHT_MODE' }}
     </span>
     <button

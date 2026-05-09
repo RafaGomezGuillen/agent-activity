@@ -109,23 +109,23 @@
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-item>
-        <tr class="hover:bg-[var(--bg-secondary)] transition-colors">
-          <td class="font-mono text-xs text-[var(--text-muted)]">
+        <tr>
+          <td>
             {{ item.timestamp | date:'medium' }}
           </td>
           <td>
             <span
-              class="px-2 py-0.5 rounded text-xs font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20"
+              class="span-accent"
               >{{ item.app || '—' }}</span
             >
           </td>
           <td>
             <span
-              class="px-2 py-0.5 rounded text-xs font-mono bg-purple-500/10 text-purple-400 border border-purple-500/20"
+              class="span-accent-secondary"
               >{{ item.type || '—' }}</span
             >
           </td>
-          <td class="font-mono text-sm text-[var(--text-primary)]">
+          <td>
             {{ item.value || '—' }}
           </td>
         </tr>

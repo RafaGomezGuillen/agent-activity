@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { ThemeService } from '../../core/services/theme.service';
+import { Component, EventEmitter, Output } from "@angular/core";
+import { ThemeService } from "../../core/services/theme.service";
 
 @Component({
-  selector: 'app-topbar',
-  templateUrl: './topbar.html',
+  selector: "app-topbar",
+  templateUrl: "./topbar.html",
   standalone: false,
-  styles: [],
+  styleUrls: ["./topbar.css"],
 })
 export class TopbarComponent {
   @Output() toggleSidebar = new EventEmitter<void>();

@@ -79,7 +79,7 @@
   >
     <div
       *ngFor="let s of screenshots"
-      class="group relative rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] overflow-hidden cursor-pointer hover:border-cyan-500/40 transition-all"
+      class="group relative rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] overflow-hidden cursor-pointer hover:border-[var(--border-hover)] transition-all"
       (click)="openDialog(s)"
       pTooltip="Taken at {{ s.created_at | date:'medium' }}"
     >
@@ -95,9 +95,9 @@
         </p>
       </div>
       <div
-        class="absolute inset-0 bg-cyan-500/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+        class="absolute inset-0 bg-[var(--bg-surface)] opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
       >
-        <i class="pi pi-search-plus text-2xl text-white"></i>
+        <i class="pi pi-search-plus text-2xl text-[var(--link-default)]"></i>
       </div>
     </div>
 

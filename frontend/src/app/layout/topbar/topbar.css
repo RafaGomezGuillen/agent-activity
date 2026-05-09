@@ -1,0 +1,10 @@
+#topbar-container {
+  .p-button-text {
+    color: var(--link-default);
+
+    &:hover {
+      background-color: var(--bg-surface);
+      color: var(--link-hover);
+    }
+  }
+}

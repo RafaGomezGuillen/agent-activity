@@ -11,15 +11,35 @@
   --font-sans: "Inter", system-ui, sans-serif;
 
   /* Light mode */
-  --bg-primary: #f1f5f9;
-  --bg-secondary: #ffffff;
+  --bg-primary: #f8fafc;
+  --bg-surface: color-mix(
+    in oklab,
+    var(--color-cyan-500) /* oklch(71.5% 0.143 215.221) */ 5%,
+    transparent
+  );
   --bg-card: #ffffff;
-  --bg-sidebar: #1e293b;
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
-  --border-color: #e2e8f0;
-  --accent-primary: #0ea5e9;
+  --border-color: #cbd5e1;
+  --border-hover: #1d4ed8;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --link-default: #2563eb;
+  --link-hover: #1d4ed8;
+
+  /* Status: Success (The "Clean" Scan) */
+  --success-main: color-mix(
+    in oklab,
+    var(--color-emerald-500) 10%,
+    transparent
+  );
+  --success-text: var(--color-emerald-400);
+
+  /* Status: Error (The "Threat" Alert) */
+  --error-main: color-mix(in oklab, var(--color-red-500) 10%, transparent);
+  --error-text: var(--color-red-400);
+
+  /* Status: Warning (The "Suspicious" Activity) */
+  --warning-main: var(--color-amber-400);
+  --warning-text: var(--color-amber-500);
 }
 
 .dark {
@@ -28,11 +48,12 @@
   --bg-secondary: #0d1117;
   --bg-card: #0f1525;
   --bg-sidebar: #060b14;
-  --text-primary: #e2e8f0;
-  --text-secondary: #94a3b8;
-  --text-muted: #475569;
+  --text-primary: #fff;
+  --text-muted: red;
   --border-color: #1a2744;
-  --accent-primary: #38bdf8;
+  --accent-primary: #0ea5e9;
+  --accent-secondary: #ff4081;
+  --accent-tertiary: #ff79c6;
 }
 
 /* === Global Resets === */
@@ -58,25 +79,23 @@ body {
   width: 6px;
   height: 6px;
 }
+
 ::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--border-color);
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted);
+  background: var(--bg-card);
 }
 
-/* === PrimeNG Overrides (dark cybersecurity theme) === */
+::-webkit-scrollbar-thumb {
+  background: var(--link-default);
+  border-radius: 3px;
+}
+
+/* === PrimeNG Overrides === */
 .p-datatable .p-datatable-thead > tr > th {
-  background: var(--bg-secondary) !important;
+  background: var(--bg-main) !important;
   border-color: var(--border-color) !important;
-  color: var(--text-muted) !important;
+  color: var(--text-main) !important;
   font-family: var(--font-mono) !important;
-  font-size: 0.7rem !important;
-  letter-spacing: 0.08em !important;
+  font-size: 12px !important;
 }
 
 .p-datatable .p-datatable-tbody > tr {
@@ -86,7 +105,8 @@ body {
 
 .p-datatable .p-datatable-tbody > tr > td {
   border-color: var(--border-color) !important;
-  color: var(--text-secondary) !important;
+  color: var(--text-main) !important;
+  font-size: 12px !important;
 }
 
 .p-paginator {
@@ -96,7 +116,7 @@ body {
 .p-tree {
   background: transparent !important;
   border: none !important;
-  color: var(--text-secondary) !important;
+  color: var(--text-muted) !important;
 }
 
 .p-tree .p-tree-node-label {
@@ -106,6 +126,61 @@ body {
 
 .p-skeleton {
   background-color: var(--border-color) !important;
+}
+
+.p-button-outlined {
+  background: transparent;
+  border-color: var(--link-default) !important;
+  color: var(--link-default) !important;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+
+  &:hover {
+    background-color: var(--link-default) !important;
+    color: #fff !important;
+    border-color: var(--link-default) !important;
+  }
+}
+
+.p-button-text {
+  background: transparent;
+  border-color: transparent;
+  color: var(--link-default) !important;
+
+  &:hover {
+    background-color: var(--bg-surface) !important;
+  }
+}
+
+.p-inputtext:enabled:focus {
+  border-color: var(--border-hover) !important;
+}
+
+.p-select-option.p-select-option-selected.p-focus {
+  background: var(--bg-surface) !important;
+  color: var(--link-hover) !important;
+}
+
+.p-select-option.p-select-option-selected {
+  background: var(--bg-surface) !important;
+  color: var(--link-hover) !important;
+}
+
+.p-select:not(.p-disabled).p-focus {
+  border-color: var(--border-hover) !important;
+}
+
+.p-paginator-page.p-paginator-page-selected {
+  background: var(--bg-surface) !important;
+  color: var(--link-default) !important;
+  border: var(--border-hover) 1px solid !important;
+}
+
+.p-paginator-page:not(.p-disabled):not(.p-paginator-page-selected):hover {
+  background: var(--bg-surface) !important;
+  color: var(--link-hover) !important;
 }
 
 /* Monospace for code-like content */
@@ -119,8 +194,42 @@ a {
   color: inherit;
 }
 
-/* Active nav link */
-.nav-item.active {
-  border-left-color: #38bdf8 !important;
-  color: #38bdf8 !important;
+.link {
+  color: var(--link-default) !important;
+  transition: color 0.2s ease !important;
+
+  &:hover {
+    color: var(--link-hover) !important;
+    text-decoration: underline !important;
+  }
+}
+
+.span-accent {
+  padding-block: 2px;
+  padding-inline: 8px;
+  border-radius: 4px;
+  background-color: var(--bg-surface);
+  font-family: var(--font-mono);
+  color: var(--link-default);
+  border: var(--border-hover) 1px solid;
+}
+
+.span-accent-secondary {
+  padding-block: 2px;
+  padding-inline: 8px;
+  border-radius: 4px;
+  background-color: var(--success-main);
+  font-family: var(--font-mono);
+  color: var(--success-text);
+  border: 1px solid var(--success-text);
+}
+
+@media (max-width: 1024px) {
+  .p-dialog-header {
+    justify-content: flex-end !important;
+
+    .p-dialog-title {
+      display: none !important;
+    }
+  }
 }
