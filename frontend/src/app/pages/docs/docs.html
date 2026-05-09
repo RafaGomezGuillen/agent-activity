@@ -21,7 +21,7 @@
       </div>
       <div class="p-5 space-y-4 font-mono text-sm">
         <div *ngFor="let section of apiSections">
-          <h3 class="text-[var(--text-primary)] font-semibold mb-2">
+          <h3 class="text-[var(--text-main)] font-semibold mb-2">
             {{ section.name }}
           </h3>
           <div class="space-y-1 ml-4">
@@ -61,7 +61,7 @@
           *ngFor="let cmd of commandDocs"
           class="border border-[var(--border-color)] rounded p-4"
         >
-          <div class="text-[var(--text-primary)] font-semibold mb-1">
+          <div class="text-[var(--text-main)] font-semibold mb-1">
             {{ cmd.name }}
           </div>
           <div class="text-[var(--text-muted)] text-xs mb-2">

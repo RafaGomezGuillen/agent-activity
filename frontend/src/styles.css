@@ -18,10 +18,13 @@
     transparent
   );
   --bg-card: #ffffff;
-  --border-color: #cbd5e1;
+
+  --border-color: #0f172a;
   --border-hover: #1d4ed8;
+
   --text-main: #0f172a;
-  --text-muted: #64748b;
+  --text-muted: #121b31;
+
   --link-default: #2563eb;
   --link-hover: #1d4ed8;
 
@@ -44,16 +47,34 @@
 
 .dark {
   /* Dark mode */
-  --bg-primary: #08091a;
-  --bg-secondary: #0d1117;
-  --bg-card: #0f1525;
-  --bg-sidebar: #060b14;
-  --text-primary: #fff;
-  --text-muted: red;
-  --border-color: #1a2744;
-  --accent-primary: #0ea5e9;
-  --accent-secondary: #ff4081;
-  --accent-tertiary: #ff79c6;
+  --bg-primary: #0f172a;
+  --bg-surface: #1e293b;
+  --bg-card: #1e293b;
+
+  --border-color: #cbd5e1;
+  --border-hover: #1d4ed8;
+
+  --text-main: #fff;
+  --text-muted: #eeeeee;
+
+  --link-default: var(--color-cyan-500);
+  --link-hover: var(--color-cyan-100);
+
+  /* Status: Success (The "Clean" Scan) */
+  --success-main: color-mix(
+    in oklab,
+    var(--color-emerald-500) 10%,
+    transparent
+  );
+  --success-text: var(--color-emerald-400);
+
+  /* Status: Error (The "Threat" Alert) */
+  --error-main: color-mix(in oklab, var(--color-red-500) 10%, transparent);
+  --error-text: var(--color-red-400);
+
+  /* Status: Warning (The "Suspicious" Activity) */
+  --warning-main: var(--color-amber-400);
+  --warning-text: var(--color-amber-500);
 }
 
 /* === Global Resets === */
@@ -68,7 +89,7 @@ body {
   padding: 0;
   font-family: var(--font-sans);
   background-color: var(--bg-primary);
-  color: var(--text-primary);
+  color: var(--text-main);
   transition:
     background-color 0.2s ease,
     color 0.2s ease;

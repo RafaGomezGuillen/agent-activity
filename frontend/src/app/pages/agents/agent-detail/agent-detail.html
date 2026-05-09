@@ -26,7 +26,7 @@
     >
       <div>
         <div class="flex items-center gap-3 mb-1">
-          <h1 class="text-[var(--text-primary)] text-2xl font-bold font-mono">
+          <h1 class="text-[var(--text-main)] text-2xl font-bold font-mono">
             <span class="text-[var(--link-default)]">// </span>{{ agent.hostname }}
           </h1>
           <app-status-badge [online]="agent.status"></app-status-badge>
@@ -64,11 +64,11 @@
         <dl class="space-y-2 text-sm font-mono">
           <div class="flex justify-between">
             <dt class="text-[var(--text-muted)]">IP Address</dt>
-            <dd class="text-[var(--text-primary)]">{{ agent.ip_address }}</dd>
+            <dd class="text-[var(--text-main)]">{{ agent.ip_address }}</dd>
           </div>
           <div class="flex justify-between">
             <dt class="text-[var(--text-muted)]">MAC Address</dt>
-            <dd class="text-[var(--text-primary)]">{{ agent.mac_address }}</dd>
+            <dd class="text-[var(--text-main)]">{{ agent.mac_address }}</dd>
           </div>
         </dl>
       </div>
