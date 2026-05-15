@@ -26,6 +26,12 @@ rm -rf "./backend/logs"
 rm -rf "./backend/uploads"
 rm -rf "./backend/database.db"
 
+echo "Removing Frontend build artifacts and temporary files..."
+rm -rf "./frontend/build"
+rm -rf "./frontend/node_modules"
+rm -rf "./frontend/dist"
+rm -rf "./frontend/package-lock.json"
+
 # Optional: Virtual Environments
 if confirm_action "Do you want to remove the Python virtual environments (venv)?"; then
   echo "Removing venvs..."
