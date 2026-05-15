@@ -41,11 +41,6 @@ const routes: Routes = [
         loadChildren: () =>
           import("./pages/about/about.module").then((m) => m.AboutModule),
       },
-      {
-        path: "docs",
-        loadChildren: () =>
-          import("./pages/docs/docs.module").then((m) => m.DocsModule),
-      },
       { path: "**", redirectTo: "" },
     ],
   },
