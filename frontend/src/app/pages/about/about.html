@@ -7,13 +7,13 @@
     breadcrumbCurrent="about"
   ></app-page-header>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
     <!-- Project Info -->
     <div
       class="rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] p-6"
     >
       <h2
-        class="text-cyan-400 font-mono text-xs uppercase tracking-wider mb-4 flex items-center gap-2"
+        class="text-[var(--link-default)] font-mono text-xs uppercase tracking-wider mb-4 flex items-center gap-2"
       >
         <i class="pi pi-shield"></i> Project
       </h2>
@@ -21,10 +21,6 @@
         <div>
           <span class="text-[var(--text-muted)]">Name: </span
           ><span class="text-[var(--text-main)]">Agent Activity</span>
-        </div>
-        <div>
-          <span class="text-[var(--text-muted)]">Version: </span
-          ><span class="text-cyan-400">0.0.1</span>
         </div>
         <div>
           <span class="text-[var(--text-muted)]">Type: </span
@@ -44,42 +40,40 @@
       class="rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] p-6"
     >
       <h2
-        class="text-cyan-400 font-mono text-xs uppercase tracking-wider mb-4 flex items-center gap-2"
+        class="text-[var(--link-default)] font-mono text-xs uppercase tracking-wider mb-4 flex items-center gap-2"
       >
         <i class="pi pi-code"></i> Tech Stack
       </h2>
       <div class="space-y-2 font-mono text-sm">
         <div class="flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full bg-cyan-400"></span
+          <span class="w-2 h-2 rounded-full bg-[var(--link-default)]"></span
           ><span class="text-[var(--text-muted)]"
             >Frontend: Angular + PrimeNG + Tailwind CSS</span
           >
         </div>
         <div class="flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full bg-emerald-400"></span
+          <span class="w-2 h-2 rounded-full bg-[var(--success-text)]"></span
           ><span class="text-[var(--text-muted)]"
             >Backend: FastAPI + SQLAlchemy</span
           >
         </div>
         <div class="flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full bg-purple-400"></span
+          <span class="w-2 h-2 rounded-full bg-[var(--error-text)]"></span
           ><span class="text-[var(--text-muted)]">Agent: Python</span>
         </div>
         <div class="flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full bg-amber-400"></span
-          ><span class="text-[var(--text-muted)]"
-            >Database: SQLite / PostgreSQL</span
-          >
+          <span class="w-2 h-2 rounded-full bg-[var(--warning-text)]"></span
+          ><span class="text-[var(--text-muted)]">Database: SQLite</span>
         </div>
       </div>
     </div>
 
     <!-- Capabilities -->
     <div
-      class="rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] p-6 md:col-span-2"
+      class="rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] p-6"
     >
       <h2
-        class="text-cyan-400 font-mono text-xs uppercase tracking-wider mb-4 flex items-center gap-2"
+        class="text-[var(--link-default)] font-mono text-xs uppercase tracking-wider mb-4 flex items-center gap-2"
       >
         <i class="pi pi-list"></i> Capabilities
       </h2>
@@ -87,36 +81,86 @@
         class="grid grid-cols-1 sm:grid-cols-2 gap-3 font-mono text-sm text-[var(--text-muted)]"
       >
         <div class="flex items-center gap-2">
-          <i class="pi pi-check-circle text-emerald-400 text-xs"></i>Real-time
-          agent monitoring
+          <i class="pi pi-check-circle text-[var(--success-text)] text-xs"></i
+          >Real-time agent monitoring
         </div>
         <div class="flex items-center gap-2">
-          <i class="pi pi-check-circle text-emerald-400 text-xs"></i>Keyboard
-          capture (keylogs)
+          <i class="pi pi-check-circle text-[var(--success-text)] text-xs"></i
+          >Keyboard capture (keylogs)
         </div>
         <div class="flex items-center gap-2">
-          <i class="pi pi-check-circle text-emerald-400 text-xs"></i>Clipboard
-          interception
+          <i class="pi pi-check-circle text-[var(--success-text)] text-xs"></i
+          >Clipboard interception
         </div>
         <div class="flex items-center gap-2">
-          <i class="pi pi-check-circle text-emerald-400 text-xs"></i>Screenshot
-          capture
+          <i class="pi pi-check-circle text-[var(--success-text)] text-xs"></i
+          >Screenshot capture
         </div>
         <div class="flex items-center gap-2">
-          <i class="pi pi-check-circle text-emerald-400 text-xs"></i>System
-          metrics collection
+          <i class="pi pi-check-circle text-[var(--success-text)] text-xs"></i
+          >System metrics collection
         </div>
         <div class="flex items-center gap-2">
-          <i class="pi pi-check-circle text-emerald-400 text-xs"></i>Remote
-          command execution
+          <i class="pi pi-check-circle text-[var(--success-text)] text-xs"></i
+          >Remote command execution
         </div>
         <div class="flex items-center gap-2">
-          <i class="pi pi-check-circle text-emerald-400 text-xs"></i>File system
-          browsing
+          <i class="pi pi-check-circle text-[var(--success-text)] text-xs"></i
+          >File system browsing
         </div>
         <div class="flex items-center gap-2">
-          <i class="pi pi-check-circle text-emerald-400 text-xs"></i>Process
-          enumeration
+          <i class="pi pi-check-circle text-[var(--success-text)] text-xs"></i
+          >Process enumeration
+        </div>
+      </div>
+    </div>
+
+    <!-- Social media -->
+    <div
+      class="rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] p-6"
+    >
+      <h2
+        class="text-[var(--link-default)] font-mono text-xs uppercase tracking-wider mb-4 flex items-center gap-2"
+      >
+        <i class="pi pi-share-alt"></i> Social Media
+      </h2>
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 gap-3 font-mono text-sm text-[var(--text-muted)]"
+      >
+        <div class="space-y-2 font-mono text-sm">
+          <div class="flex items-center gap-2">
+            <i class="pi pi-github text-xs"></i>
+            <a
+              href="https://github.com/RafaGomezGuillen"
+              target="_blank"
+              pTooltip="Go to my GitHub page"
+              class="link"
+            >
+              RafaGomezGuillen - GitHub
+            </a>
+          </div>
+          <div class="flex items-center gap-2">
+            <i class="pi pi-linkedin text-xs"></i>
+            <a
+              href="https://www.linkedin.com/in/rafael-gomez-guillen/"
+              target="_blank"
+              pTooltip="Go to my LinkedIn page"
+              class="link"
+            >
+              Rafael Gomez Guillen - LinkedIn
+            </a>
+          </div>
+          <div class="flex items-center gap-2">
+            <i class="pi pi-instagram text-xs"></i>
+            <a
+              href="https://www.instagram.com/rafagomez.jpg/"
+              target="_blank"
+              pTooltip="Go to my Instagram page"
+              class="link"
+            >
+              Rafa Gómez - Instagram
+            </a>
+          </div>
         </div>
       </div>
     </div>
