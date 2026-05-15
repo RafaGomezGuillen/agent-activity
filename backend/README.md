@@ -1,78 +1,75 @@
-# Backend Side
+# Backend
 
-## Installation Guide (Python 3.11)
+The backend is a FastAPI service for Agent Activity. It registers agents, stores metrics and activity data, serves screenshots, manages commands, and runs scheduled maintenance jobs.
 
-Set up the project on **macOS, Linux, or Windows** using Python 3.11.
+![Backend docs - Swagger UI](../assets/backend/docs.png)
 
-- All commands shown needs to be executed from the `backend` folder.
+## Stack
 
----
+- Python 3.11 or or higher.
+- FastAPI and Uvicorn.
+- SQLAlchemy.
+- Alembic.
+- SQLite.
+- APScheduler.
+- Pydantic 2.
 
-### Check Python 3.11 Installation
+## Setup
 
-Verify your Python version:
-
-```sh
-python --version
-```
-
-If Python 3.11 is not installed, download it from the [official Python website](https://www.python.org/downloads/).
-
----
-
-### Create & Activate a Virtual Environment
-
-**macOS & Linux:**
+Run all commands from `backend/`.
 
 ```sh
 python -m venv venv
 source venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
+alembic upgrade head
+python -m app.main
 ```
 
-**Windows (Command Prompt):**
+On Windows:
 
 ```bat
 python -m venv venv
 venv\Scripts\activate
-```
-
----
-
-### Install Dependencies
-
-With the virtual environment activated, run:
-
-```sh
 pip install --upgrade pip
 pip install -r requirements.txt
-```
-
----
-
-### Migrate the Alembic migrations
-
-To create the **SQLite** DB and migrate the models execute the following command:
-
-```sh
 alembic upgrade head
-```
-
-With this action `database.db` file will be generated.
-
-### Run the Project
-
-Start the **Fast API** server:
-
-```sh
 python -m app.main
 ```
 
-The API will execute in the following URL `http://117.0.0.1:8000`.
+The API runs at:
 
-#### Swagger Documentation
+```text
+http://127.0.0.1:8000
+```
 
-You can find the Swagger Documentation after running the API server at:
+Swagger UI is available at:
+
+```text
+http://localhost:8000/docs
+```
+
+## Database
+
+The SQLite URL is configured in `app/db/database.py`:
+
+```text
+sqlite:///./database.db
+```
+
+After `alembic upgrade head`, the database file is created as:
+
+```text
+backend/database.db
+```
+
+Migration files live in `alembic/versions/`.
+
+Common Alembic commands:
 
 ```sh
-http://localhost:8000/docs
+alembic upgrade head
+alembic revision --autogenerate -m "describe change"
+alembic downgrade -1
 ```
