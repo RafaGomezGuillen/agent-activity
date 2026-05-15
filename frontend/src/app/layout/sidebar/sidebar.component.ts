@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from "@angular/core";
+import { ThemeService } from "../../core/services/theme.service";
 
 interface NavItem {
   label: string;
@@ -16,6 +17,8 @@ interface NavItem {
 export class SidebarComponent {
   @Output() navigateItem = new EventEmitter<void>();
 
+  constructor(public themeService: ThemeService) {}
+
   navItems: NavItem[] = [
     { label: "Dashboard", icon: "pi pi-th-large", route: "/", exact: true },
     { label: "Agents", icon: "pi pi-server", route: "/agents" },
@@ -23,7 +26,6 @@ export class SidebarComponent {
     { label: "Keylogs", icon: "pi pi-align-justify", route: "/keylogs" },
     { label: "Screenshots", icon: "pi pi-image", route: "/screenshots" },
     { label: "About", icon: "pi pi-info-circle", route: "/about" },
-    { label: "Docs", icon: "pi pi-book", route: "/docs" },
   ];
 
   onNavigate(): void {

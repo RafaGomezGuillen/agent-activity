@@ -9,7 +9,11 @@
     <div
       class="w-8 h-8 rounded bg-[var(--bg-surface)] flex items-center justify-center"
     >
-      <i class="pi pi-shield text-[var(--accent-primary)] text-sm"></i>
+      <img
+        [src]="themeService.isDark ? 'logo-dark.svg' : 'logo-light.svg'"
+        alt="Logo"
+        class="w-5 h-5 object-contain"
+      />
     </div>
     <div>
       <div
