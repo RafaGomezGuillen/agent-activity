@@ -29,7 +29,7 @@ PLATFORM_CONFIG = {
         "distpath": "dist/mac",
         "workpath": "build/mac",
         "icon": str(ICON_PATH) if ICON_PATH.exists() else None,
-        "osx_bundle_identifier": "com.alisium.agent",
+        "osx_bundle_identifier": "com.activity.agent",
         "target_arch": "universal2",  # Intel + ARM support
     },
     "linux": {

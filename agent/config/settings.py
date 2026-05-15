@@ -2,7 +2,7 @@
 SERVER_URL = "http://localhost:8000"
 METRICS_INTERVAL = 60 # seconds between sending heartbeat metrics to server
 
-APP_NAME = "alisium-agent"
+APP_NAME = "agent-activity"
 LOGS_DIR = "logs"
 DATA_DIR = "data"
 AGENT_FILE = f"{DATA_DIR}/agent_id.txt"

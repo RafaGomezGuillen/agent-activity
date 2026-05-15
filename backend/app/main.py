@@ -29,9 +29,9 @@ async def lifespan(app: FastAPI):
     stop_scheduler()
 
 app = FastAPI(
-    title="Alisium Agent Activity API",
+    title="Agent Activity API",
     description="""
-    This API provides endpoints to manage and retrieve agent activity data for the Alisium project
+    This API provides endpoints to manage and retrieve agent activity data for the project
     """,
     version="0.0.1",
     lifespan=lifespan
