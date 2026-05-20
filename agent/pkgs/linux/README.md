@@ -1,20 +1,12 @@
 # Linux Package
 
-This folder contains the Linux PyInstaller entry point and install scripts for the agent. The packaged Linux agent runs as a `systemd` service.
+The Linux package turns the agent into a background `systemd` service. This is the right path when you want the agent to start on boot, run without a visible UI, and be managed with normal service commands.
 
-![Linu service](../../../assets/agent/linux-service.png)
-
-## Files
-
-- `main_linux.py`: daemon entry point with signal handling and single-instance locking.
-- `build_linux.spec`: PyInstaller spec for Linux.
-- `runtime_linux_paths.py`: redirects bundled app data to the user's Linux data directory.
-- `build_linux.sh`: builds, installs, enables, and starts the service.
-- `uninstall_linux.sh`: stops and removes the service, binary, lock file, and app data.
+![Linux service](../../../assets/agent/linux-service.png)
 
 ## Build And Install
 
-Run from this folder or any shell that can execute the script:
+Activate the agent virtual environment first, then run:
 
 ```sh
 cd agent/pkgs/linux
@@ -22,22 +14,15 @@ chmod +x build_linux.sh uninstall_linux.sh
 ./build_linux.sh
 ```
 
-> [!IMPORTANT]
-> Ensure the Python virtual environment is **active** before running `build_linux.sh`.
+The script builds the agent with PyInstaller, installs the executable under `/usr/local/bin`, creates a service file, reloads `systemd`, enables the service, and starts it. Root privileges are required for the install locations, so the script uses `sudo` when needed.
 
-## Runtime Paths
+## Runtime Behavior
 
-When bundled by PyInstaller, `runtime_linux_paths.py` changes the process working directory to:
+The service runs as the user that launched the installer through `sudo`, or as the current user when run directly as root. Bundled runtime files are written under:
 
 ```text
 ~/.local/share/agent-activity
 ```
-
-Runtime data is stored below that directory:
-
-- `data/`
-- `logs/`
-- `data/agent_id.txt`
 
 Service output is appended to:
 
@@ -45,7 +30,9 @@ Service output is appended to:
 ~/.local/share/agent-activity/logs/service.log
 ```
 
-## Service Commands
+The daemon entry point also uses a lock file at `/tmp/agent-activity.lock` so a second copy exits instead of running beside the first one.
+
+## Managing The Service
 
 ```sh
 systemctl status agent-activity
@@ -57,12 +44,15 @@ systemctl disable agent-activity
 
 ## Uninstall
 
+Activate the same Python environment, then run:
+
 ```sh
 cd agent/pkgs/linux
 ./uninstall_linux.sh
 ```
 
-> [!IMPORTANT]
-> Ensure the Python virtual environment is **active** before running `uninstall_linux.sh`.
+The uninstall script stops and disables the service, removes the installed binary and optional app directory, deletes the lock file, and removes the user's app data directory.
 
-The uninstall script stops and disables the service, removes the installed binary, removes `/usr/local/lib/agent-activity` when present, removes `/tmp/agent-activity.lock`, and deletes the user's app data directory.
+## Notes
+
+The current Linux packaged agent is best suited for metrics and command polling. The shared agent loop only starts keylog, clipboard, and screenshot services automatically on Windows and macOS.

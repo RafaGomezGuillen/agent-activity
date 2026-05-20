@@ -1,22 +1,12 @@
 # Backend
 
-The backend is a FastAPI service for Agent Activity. It registers agents, stores metrics and activity data, serves screenshots, manages commands, and runs scheduled maintenance jobs.
+The backend is the API and persistence layer for Agent Activity. Agents report to it, the dashboard reads from it, and scheduled jobs keep agent status and stored screenshots from going stale. It is intentionally compact: FastAPI for the HTTP layer, SQLAlchemy and Alembic for persistence, SQLite for local storage, and APScheduler for background maintenance.
 
 ![Backend docs - Swagger UI](../assets/backend/docs.png)
 
-## Stack
+## Running It Locally
 
-- Python 3.11 or or higher.
-- FastAPI and Uvicorn.
-- SQLAlchemy.
-- Alembic.
-- SQLite.
-- APScheduler.
-- Pydantic 2.
-
-## Setup
-
-Run all commands from `backend/`.
+Install dependencies, apply migrations, and start the API:
 
 ```sh
 python -m venv venv
@@ -38,35 +28,13 @@ alembic upgrade head
 python -m app.main
 ```
 
-The API runs at:
+The API runs at `http://127.0.0.1:8000`. Swagger UI is available at `http://localhost:8000/docs`.
 
-```text
-http://127.0.0.1:8000
-```
+## Database And Migrations
 
-Swagger UI is available at:
+The local database is SQLite and is created as `database.db` after migrations are applied. Alembic migration files live under `alembic/versions`.
 
-```text
-http://localhost:8000/docs
-```
-
-## Database
-
-The SQLite URL is configured in `app/db/database.py`:
-
-```text
-sqlite:///./database.db
-```
-
-After `alembic upgrade head`, the database file is created as:
-
-```text
-backend/database.db
-```
-
-Migration files live in `alembic/versions/`.
-
-Common Alembic commands:
+Useful commands:
 
 ```sh
 alembic upgrade head

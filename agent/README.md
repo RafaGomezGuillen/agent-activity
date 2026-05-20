@@ -1,31 +1,22 @@
 # Agent
 
+The agent is the desktop-side process for Agent Activity. Its job is to introduce the machine to the backend, keep reporting that it is alive, send system metrics, and execute the small command set supported by the platform. On Windows and macOS it can also run background services for keyboard activity, clipboard changes, and screenshots.
+
 ![Agent logs](../assets/agent/agent.png)
 
-The agent is a Python endpoint process for Agent Activity. It registers the host with the backend, sends periodic system metrics, polls for commands, and on supported desktop platforms starts background services for keylogging, clipboard monitoring, and screenshots.
-
 > [!CAUTION]
-> Use it only on machines where this monitoring is authorized and disclosed.
+> The agent can collect sensitive user activity. Run it only where monitoring is authorized, disclosed, and expected.
 
-## Stack
+## Running From Source
 
-- Python 3.11 or higher.
-- `psutil` for system metrics and process data.
-- `requests` for backend communication.
-- `pynput`, `pyperclip`, `Pillow`, and `pyscreenshot` for activity capture on supported platforms.
-- `rumps` and `pyobjc` for the macOS menu bar bundle.
-- `pystray` and `pywin32` for the Windows tray app.
-- PyInstaller for packaged executables.
-
-## Setup
-
-Run all commands from `agent/`.
+Start the backend first, then install the agent dependencies:
 
 ```sh
 python -m venv venv
 source venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
+python main.py
 ```
 
 On Windows:
@@ -35,59 +26,45 @@ python -m venv venv
 venv\Scripts\activate
 pip install --upgrade pip
 pip install -r requirements.txt
+python main.py
 ```
 
-On Linux:
+On some Linux systems you may need the venv package before creating the environment:
 
 ```sh
-sudo apt install python3.10-venv binutils -y
-python -m venv venv
-source venv/bin/activate
-pip install --upgrade pip
-pip install -r requirements.txt
+sudo apt install python3-venv binutils -y
 ```
 
 ## Configuration
 
-Configuration lives in `config/settings.py`.
+The main settings live in `config/settings.py`. The most important value is `SERVER_URL`, which defaults to `http://localhost:8000`. Point it at the backend before running the agent on a different machine.
 
-Important values:
+`METRICS_INTERVAL` controls how often the agent sends heartbeat metrics and checks for commands. `APP_NAME` controls the package, service, app, and tray names. The keylog, clipboard, and screenshot intervals control how frequently local buffers are flushed and uploaded. `MAX_FILE_SIZE` limits the `filesystem.read_file` command.
 
-- `SERVER_URL`: backend API URL. Defaults to `http://localhost:8000`.
-- `METRICS_INTERVAL`: seconds between heartbeat metrics and command polling.
-- `APP_NAME`: packaged app/service name, currently `agent-activity`.
-- `DATA_DIR`: local relative data directory for source runs.
-- `LOGS_DIR`: local relative logs directory for source runs.
-- `KEYLOG_SEND_INTERVAL`, `CLIPBOARD_SEND_INTERVAL`, `SCREENSHOT_INTERVAL`: activity upload intervals.
-- `MAX_FILE_SIZE`: maximum file size accepted by the `filesystem.read_file` command.
+## What Happens On Startup
 
-## Run From Source
+When the agent starts, it looks for a saved identity in `data/agent_id.txt`. If one exists, it reuses it. If not, it gathers basic host information and registers with the backend. After registration, the main loop sends metrics and polls the command endpoint on every interval.
 
-Start the backend first, then run:
+On Windows and macOS, the loop also starts the capture services once. Linux currently uses the shared loop for metrics and command polling; packaged Linux runs as a daemon through `systemd`.
 
-```sh
-python main.py
-```
+## Supported Commands
 
-- On Windows and macOS, background services are started from the loop for keylogs, clipboard events, and screenshots. 
-- On Linux, the current agent loop only sends metrics and polls commands unless platform-specific capture behavior is extended.
+The backend can queue commands for an online agent. The agent fetches pending commands, executes the matching handler, and reports either `executed` with a JSON result or `failed` with an error.
+
+- `filesystem.list_directory` lists one directory level.
+- `filesystem.read_file` reads text files up to `MAX_FILE_SIZE`.
+- `processes.list_processes` returns running process information from `psutil`.
 
 ## Local Data
 
-When running from source, the agent writes relative to `agent/`:
-
-- `data/agent_id.txt`
-- `data/keylog.jsonl`
-- `data/clipboard.jsonl`
-- `data/screenshots/`
-- `logs/`
-
-Packaged builds redirect data and logs to OS-specific application data folders. See the platform README files under `pkgs/`.
+Source runs write identity, buffered activity, screenshots, and logs under the local `agent/` folder. Packaged builds redirect those files to the normal application data location for each operating system, described in the platform packaging guides.
 
 ## Packaging
 
-- [Linux packaging](pkgs/linux/README.md)
-- [macOS packaging](pkgs/mac/README.md)
-- [Windows packaging](pkgs/windows/README.md)
+Use the platform package scripts when you want the agent to behave like a normal installed desktop app or service:
 
-Shared PyInstaller settings live in `pkgs/pyinstaller_config.py`.
+- [Linux package](pkgs/linux/README.md)
+- [macOS package](pkgs/mac/README.md)
+- [Windows package](pkgs/windows/README.md)
+
+Shared PyInstaller options are kept in `pkgs/pyinstaller_config.py`.

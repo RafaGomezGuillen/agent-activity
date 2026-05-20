@@ -1,20 +1,12 @@
 # macOS Package
 
-This folder contains the macOS PyInstaller entry point and package scripts for the agent. The packaged macOS agent runs as a menu bar app with Start, Stop, and Force Quit controls.
+The macOS package turns the agent into a menu bar app. It gives the user simple Start, Stop, and Force Quit controls while the actual agent loop runs in the background.
 
 ![macOS app](../../../assets/agent/macos-app.png)
 
-## Files
-
-- `main_mac.py`: `rumps` menu bar app entry point.
-- `build_mac.spec`: PyInstaller spec that creates an `.app` bundle.
-- `runtime_mac_paths.py`: redirects bundled app data to Application Support.
-- `build_mac.sh`: builds the `.app` bundle and wraps it in a DMG.
-- `uninstall_mac.sh`: removes the app bundle and Application Support data.
-
 ## Build
 
-Run on macOS from this folder:
+Activate the agent virtual environment on macOS, then run:
 
 ```sh
 cd agent/pkgs/mac
@@ -22,64 +14,41 @@ chmod +x build_mac.sh uninstall_mac.sh
 ./build_mac.sh
 ```
 
-> [!IMPORTANT]
-> Ensure the Python virtual environment is **active** before running `build_mac.sh`.
+The script builds an `.app` bundle with PyInstaller and then creates a DMG with an Applications shortcut. The generated artifacts are written under `agent/dist/mac`.
 
 ![DMG app](../../../assets/agent/dmg-app.png)
 
-## Runtime Paths
+## Runtime Behavior
 
-When bundled by PyInstaller, `runtime_mac_paths.py` changes the process working directory to:
+When bundled, the app stores identity, logs, buffered activity, and screenshots under:
 
 ```text
 ~/Library/Application Support/agent-activity
 ```
 
-Runtime data is stored below that directory:
-
-- `data/`
-- `logs/`
-- `data/agent_id.txt`
-- `data/keylog.jsonl`
-- `data/clipboard.jsonl`
-- `data/screenshots/`
-
-## Menu Bar Behavior
-
-The app exposes:
-
-- `Start Agent`: starts the agent loop in a background thread.
-- `Stop Agent`: signals the loop to stop.
-- `Force Quit`: stops the loop and exits the menu bar app.
-
-The entry point checks for another running app instance using the bundle identifier from the current app bundle.
+The menu bar app prevents duplicate app instances, starts the agent loop on request, and uses notifications to report basic state changes.
 
 ![macOS menu bar](../../../assets/agent/menu-bar.png)
 
 ## Permissions
 
-macOS may require explicit privacy permissions depending on which services are used:
+macOS may ask for privacy permissions depending on which capture services are used. Keyboard capture can require Accessibility or Input Monitoring permission. Screenshots can require Screen Recording permission. Active application detection may trigger Automation-related prompts because it uses AppleScript.
 
-- Accessibility/Input Monitoring for keyboard capture.
-- Screen Recording for screenshots.
-- Automation permissions may be requested when active application detection calls AppleScript.
+These permissions are granted by the user in macOS System Settings. Without them, the app may still run, but some capture features can return empty or partial data.
 
-These permissions are controlled by macOS System Settings and may need to be granted after first launch.
-
-![macOS menu bar](../../../assets/agent/mac-notification.png)
+![macOS notification](../../../assets/agent/mac-notification.png)
 
 ## Uninstall
+
+Activate the agent virtual environment, then run:
 
 ```sh
 cd agent/pkgs/mac
 ./uninstall_mac.sh
 ```
 
-The uninstall script kills running app processes, removes `/Applications/agent-activity.app` if present, and deletes:
+The uninstall script stops running app processes, removes `/Applications/agent-activity.app` when present, and deletes:
 
 ```text
 ~/Library/Application Support/agent-activity
 ```
-
-> [!IMPORTANT]
-> Ensure the Python virtual environment is **active** before running `uninstall_mac.sh`.
