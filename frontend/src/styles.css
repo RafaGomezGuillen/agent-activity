@@ -233,6 +233,7 @@ a {
   font-family: var(--font-mono);
   color: var(--link-default);
   border: var(--border-hover) 1px solid;
+  line-height: 18px;
 }
 
 .span-accent-secondary {

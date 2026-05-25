@@ -107,9 +107,7 @@
       </ng-template>
       <ng-template pTemplate="body" let-item>
         <tr>
-          <td>
-            {{ item.timestamp | date:'medium' }}
-          </td>
+          <td>{{ item.timestamp | date:'medium' }}</td>
           <td>
             <a
               [routerLink]="['/agents', item.agent_id]"
@@ -119,27 +117,19 @@
             >
           </td>
           <td>
-            <span
-              class="span-accent"
-              >{{ item.app || '—' }}</span
-            >
+            <div class="span-accent">{{ item.app || '—' }}</div>
           </td>
           <td>
-            <span
-              class="span-accent-secondary"
-              >{{ item.type || '—' }}</span
-            >
+            <span class="span-accent-secondary">{{ item.type || '—' }}</span>
           </td>
-          <td>
-            {{ item.value || '—' }}
-          </td>
+          <td>{{ item.value || '—' }}</td>
         </tr>
       </ng-template>
       <ng-template pTemplate="emptymessage">
         <tr>
           <td
             colspan="5"
-            style="text-align: center !important;"
+            style="text-align: center !important"
             class="text-[var(--text-muted)] font-mono text-sm py-8"
           >
             No keylog entries found.
