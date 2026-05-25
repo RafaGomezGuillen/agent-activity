@@ -28,6 +28,7 @@ export class KeylogsComponent implements OnInit {
     { label: 'All Types', value: '' },
     { label: 'Text', value: 'text' },
     { label: 'Combo', value: 'combo' },
+    { label: 'Key', value: 'key' },
   ];
 
   constructor(

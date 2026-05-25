@@ -29,9 +29,9 @@ export class AgentKeylogsComponent implements OnInit {
 
   typeOptions = [
     { label: 'All Types', value: '' },
-    { label: 'keypress', value: 'keypress' },
-    { label: 'keydown', value: 'keydown' },
-    { label: 'keyup', value: 'keyup' },
+    { label: 'Text', value: 'text' },
+    { label: 'Combo', value: 'combo' },
+    { label: 'Key', value: 'key' },
   ];
 
   constructor(
